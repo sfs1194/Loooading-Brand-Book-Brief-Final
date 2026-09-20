@@ -7,11 +7,11 @@ Verrouillage horizontal du logo officiel : le Z (icône) à gauche, le mot-clé
 
 | Fichier | Usage | Dimensions |
 |---|---|---|
-| `..._H20mm.pdf` | Impression (vectoriel, tracés, sans police à fournir) | 72,81 × 20,00 mm |
-| `..._H20mm.svg` | Web / édition vectorielle | 72,81 × 20,00 mm |
-| `..._H20mm_300dpi.png` | Bureautique, PDF légers | 860 × 236 px |
-| `..._H20mm_600dpi.png` | Impression courante | 1720 × 472 px |
-| `..._H20mm_1200dpi.png` | Impression fine, petits formats | 3440 × 945 px |
+| `..._H20mm.pdf` | Impression (vectoriel, tracés, sans police à fournir) | 138,71 × 20,00 mm |
+| `..._H20mm.svg` | Web / édition vectorielle | 138,71 × 20,00 mm |
+| `..._H20mm_300dpi.png` | Bureautique, PDF légers | 1638 × 236 px |
+| `..._H20mm_600dpi.png` | Impression courante | 3277 × 472 px |
+| `..._H20mm_1200dpi.png` | Impression fine, petits formats | 6553 × 945 px |
 
 PNG en fond transparent, DPI inscrits dans le fichier : l'image se place donc
 d'elle-même à 2 cm de hauteur dans InDesign, Word ou Canva.
@@ -25,10 +25,12 @@ Dérivé des sources officielles, sans redessin :
 
 Les deux éléments ont été vectorisés (potrace) puis assemblés.
 
-Proportions reprises du logo officiel vertical :
+Proportions du verrouillage horizontal (le texte est agrandi par rapport au
+logo vertical, où la capitale ne fait que 0,2667 × la hauteur du Z, afin de
+remplir la hauteur du fichier) :
 
-- hauteur de capitale du texte = 0,2667 × hauteur du Z (144 / 540 px mesurés sur l'original)
-- écart Z / texte = 0,35 × largeur du Z
+- hauteur de capitale du texte = 0,65 × hauteur du Z
+- écart Z / texte = 0,30 × largeur du Z
 - texte centré optiquement sur la hauteur du Z (centrage sur la hauteur de
   capitale, hors descendante du J)
 
