@@ -1,89 +1,86 @@
-# BEŶT ✕ LATE — affiches de collaboration
+# BEŶT & CO ✕ LATE — affiches recto / verso
 
-Trois affiches A1 pour les panneaux devant le magasin, refaites à partir des
-deux originaux. Tout est vectoriel : les fichiers montent en A0 (ou plus) sans
-perdre un poil de netteté.
+Deux affiches A1 pour les panneaux devant le magasin. Recto et verso d'un même
+message, construites sur les **assets officiels BEŶT** récupérés dans le Drive.
+Tout est vectoriel : les fichiers montent en A0 sans perdre un poil de netteté.
 
-## Ce qui a changé par rapport aux originaux
+## Le parti pris
 
-Les affiches de départ posaient les logos et les icônes un peu partout, tous au
-même poids visuel : de loin, on ne lisait ni la hiérarchie, ni le fait qu'il
-s'agit d'une collaboration.
+Les affiches de départ posaient logos et icônes au même poids visuel, sur des
+rayures pleine page : de loin, ni hiérarchie, ni lecture de la collaboration.
+Et elles ne montraient que **BEŶT**, pas **BEŶT & CO**.
 
-| Problème | Correction |
+Contrainte forte : **ne jamais écrire ce qui est servi.** Ce sont donc les
+**noms** qui portent l'affiche, et les **tasses** qui disent le reste. Chaque
+côté fait un seul travail :
+
+| | Fond | Encre | Rôle | Lecture |
+|---|---|---|---|---|
+| **Recto** | Tomate | Crème | les noms | BEŶT & CO ✕ LATE |
+| **Verso** | Bleu | Tomate | les objets | LATE — chez — BEŶT & CO |
+
+Le recto est mené par la maison hôte, le verso par l'invité : même système,
+hiérarchie inversée, couleurs permutées. Les deux côtés portent les deux noms,
+parce qu'un passant n'en voit qu'un seul à la fois.
+
+## Assets utilisés (tous officiels)
+
+| Élément | Fichier d'origine |
 |---|---|
-| Logos flottants, sans lien entre eux | Un vrai lockup **BEŶT ✕ LATE** — la croix dit « collaboration » d'un coup d'œil |
-| Aucun message | Une phrase claire par affiche : LATE est le coffee shop, il est chez BEŶT |
-| Icônes éparpillées au hasard | Icônes rangées : socle de l'arche, angles, bandeau — elles cadrent au lieu de brouiller |
-| Rayures sur toute la surface, rien ne respire | Une zone calme (arche ou bandeau crème) réservée au lockup, rayures autour |
-| Tout à plat, sans hiérarchie | Trois niveaux : surtitre → lockup → message → mention pratique |
+| Logo BEŶT | `2026-08-26-BEYT-Logo-Officiel-Vectorise-Tomate-v01.svg` |
+| Tampon « & CO » | `2026-09-04-BEYT-Tampon-Ovale-Beyt-And-Co-Vectorise-v01.svg` |
+| Icône tasse | `2026-08-20-BEYT-Icone-Tasse-Vectorisee-Noir-v01.svg` |
+| Icône tasse thé-sfenj | `2026-08-25-BEYT-Icone-Tasse-The-Sfenj-Vectorisee-Noir-v01.svg` |
+| Logo LATE | revectorisé depuis les affiches d'origine (`source/late/`) |
 
-L'arche est le fil rouge de la série : **BEŶT (بيت) veut dire « maison »**, donc
-le seuil d'une porte. Affiche 1, l'arche est claire sur fond rayé ; affiche 3,
-elle est rayée sur fond crème — même motif, inversé.
+Le sous-titre du logo LATE a été retiré : il nomme ce qui est servi.
 
-## Les trois affiches
+## Palette
 
-| # | Fond | Rôle | Message |
-|---|---|---|---|
-| 01 — collaboration | orange rayé | l'annonce | « LE CAFÉ, À LA MAISON » |
-| 02 — invitation | bleu rayé | l'accroche de rue | « ON PREND UN CAFÉ ? » |
-| 03 — deux maisons | crème | la signature | « DEUX MAISONS, UNE SEULE ADRESSE » |
+| | | |
+|---|---|---|
+| Tomate | `#E82613` | rouge officiel BEŶT |
+| Crème | `#F7EFDC` | le papier |
+| Bleu | `#C3E9FB` | le bleu LATE, repris des affiches d'origine |
 
-Elles fonctionnent seules comme en série. Pour deux panneaux seulement, prendre
-01 et 02 : l'annonce puis l'invitation.
+## Typographie
+
+Deux familles, pas trois. Les logos ne sont jamais retapés.
+
+- **Italiana** — l'esprit fin et déco du logo BEŶT
+- **Archivo** — surtitres et mentions, en capitales espacées
 
 ## Fichiers
 
 ```
 affiches/pdf/…-A1.pdf                 format final, 594 × 841 mm
-affiches/pdf/…-A1-fonds-perdus.pdf    604 × 851 mm — la version à envoyer à l'imprimeur
-affiches/png/…png                     aperçus 1600 px (réseaux, validation)
+affiches/pdf/…-A1-fonds-perdus.pdf    604 × 851 mm — la version pour l'imprimeur
+affiches/png/…png                     aperçus 1600 px
 affiches/svg/…-A1.svg                 sources vectorielles, éditables dans Illustrator
 ```
 
 Les PDF ne contiennent **aucune image matricielle** : logos, icônes et textes
 sont tous en courbes, donc aucune police à fournir à l'imprimeur.
 
-## Palette
-
-Reprise au pixel près des originaux.
-
-| | |
-|---|---|
-| Orange | `#F55000` |
-| Orange rayure | `#F97A37` |
-| Bleu | `#C3E9FB` |
-| Bleu rayure | `#E2F2F9` |
-| Crème | `#F7EFDC` |
-
-## Typographie
-
-Les logos BEŶT et LATE ne sont jamais retapés : ce sont les lettrages d'origine,
-vectorisés. Pour le reste :
-
-- **Italiana** — les phrases en capitales, dans l'esprit fin et déco de BEŶT
-- **Anton** — l'accroche de l'affiche 02, dans l'esprit massif du « MATCHA + COFFEE »
-- **Archivo** — les mentions pratiques
-
 ## Refabriquer les fichiers
 
 ```bash
 cd source
-pip install pymupdf pillow numpy potracer cairosvg fonttools
-python3 vectorize.py   # logos PNG → courbes (shapes.json) — à refaire seulement si un logo change
-python3 build.py       # → ../affiches/{pdf,png,svg}
+pip install cairosvg fonttools
+python3 build.py        # → ../affiches/{pdf,png,svg}
 ```
 
-`source/kit.py` contient la boîte à outils (palette, rayures peintes, arche,
-croix, placement des icônes, texte converti en courbes). Une affiche = un
-fichier `p1.py` / `p2.py` / `p3.py`, en millimètres, faciles à retoucher.
+`source/kit2.py` contient la boîte à outils (palette, chargement des assets
+BEŶT, placement, croix de collaboration, texte converti en courbes). Une
+affiche = un fichier (`recto.py`, `verso.py`), en millimètres.
+
+`source/late/vectorize.py` ne sert qu'à régénérer le logo LATE si sa source
+change (il demande en plus `pillow`, `numpy`, `potracer`).
 
 Les polices sont sous licence SIL Open Font (Google Fonts), redistribuables.
 
 ## À compléter si besoin
 
 Les affiches ne portent volontairement **ni horaires, ni adresse, ni comptes
-Instagram** — je n'avais pas ces informations. Pour en ajouter, la ligne du bas
-de chaque affiche est prévue pour ça (`Archivo-Medium`, bas de `p1.py`,
-`p2.py`, `p3.py`).
+Instagram** — je n'avais pas ces informations. La ligne du bas de chaque
+affiche est prévue pour ça (`Archivo-Medium`, bas de `recto.py` / `verso.py`).

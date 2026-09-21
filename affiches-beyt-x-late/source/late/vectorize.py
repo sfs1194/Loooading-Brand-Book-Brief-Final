@@ -4,14 +4,14 @@ import potrace
 from PIL import Image
 
 SRC = {
-    "beyt":    ("logos/beyt.png", 2),   # wordmark BEYT
-    "late":    ("logos/late.png", 3),   # logo LATE + MATCHA+COFFEE
-    "sip":     ("logos/sip.png", 3),   # fille qui boit
-    "cookie":  ("logos/cookie.png", 3),   # fille aux cookies
-    "jug":     ("logos/jug.png", 3),   # pichet
-    "vase":    ("logos/vase.png", 3),   # vase a anse
-    "sun":     ("logos/sun.png", 3),   # soleil
-    "hand":    ("logos/hand.png", 3),   # main
+    "beyt":    ("assets/img_53.png", 2),   # wordmark BEYT
+    "late":    ("assets/img_57.png", 3),   # logo LATE + MATCHA+COFFEE
+    "sip":     ("assets/img_90.png", 3),   # fille qui boit
+    "cookie":  ("assets/img_56.png", 3),   # fille aux cookies
+    "jug":     ("assets/img_46.png", 3),   # pichet
+    "vase":    ("assets/img_58.png", 3),   # vase a anse
+    "sun":     ("assets/img_54.png", 3),   # soleil
+    "hand":    ("assets/img_81.png", 3),   # main
 }
 
 def trace(path, scale):
@@ -42,12 +42,11 @@ def trace(path, scale):
         d.append("Z")
     return {"d": "".join(d), "w": im.width, "h": im.height}
 
-out = {k: trace(p, s) for k, (p, s) in SRC.items()}
-json.dump(out, open("shapes.json", "w"))
-for k, v in out.items():
-    print(f"{k:8} {v['w']:5}x{v['h']:<5} path {len(v['d']):7} chars")
 
-# --- decoupe du logo LATE : la marque seule / le sous-titre seul ---
+
+
+
+# --- le logo LATE sans le sous-titre : on ne garde que le lettrage
 def trace_crop(path, scale, frac0, frac1):
     im = Image.open(path).convert("RGB")
     a = np.array(im).max(axis=2)
@@ -56,14 +55,13 @@ def trace_crop(path, scale, frac0, frac1):
     H = im.height
     im = im.crop((0, int(H * frac0), im.width, int(H * frac1)))
     a = np.array(im).max(axis=2) > 100
-    ys, xs = np.where(a)                       # recadrage serre sur la partie
+    ys, xs = np.where(a)
     im = im.crop((xs.min(), ys.min(), xs.max() + 1, ys.max() + 1))
-    tmp = "logos/_part.png"; im.save(tmp)
+    tmp = "late/_part.png"; im.save(tmp)
     return trace(tmp, scale)
 
-out = json.load(open("shapes.json"))
-out["late_mark"] = trace_crop("logos/late.png", 3, 0.00, 0.80)
-out["late_sub"]  = trace_crop("logos/late.png", 4, 0.83, 1.00)
-json.dump(out, open("shapes.json", "w"))
-for k in ("late_mark", "late_sub"):
-    print(k, out[k]["w"], "x", out[k]["h"])
+
+if __name__ == "__main__":
+    out = trace_crop("late/late-logo-source.png", 3, 0.00, 0.80)
+    json.dump(out, open("late/late-mark.json", "w"))
+    print("late-mark", out["w"], "x", out["h"])
