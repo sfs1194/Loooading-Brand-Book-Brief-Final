@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Devis assiettes Yazami</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --paper:      #F4F5F2;
+  --surface:    #FFFFFF;
+  --ink:        #15181B;
+  --ink-2:      #454D53;
+  --muted:      #78828A;
+  --rule:       #DCE0DD;
+  --rule-soft:  #E8EBE7;
+  --cobalt:     #23459A;
+  --cobalt-soft:#E6EAF6;
+  --amber:      #7F5410;
+  --amber-soft: #F4EDDD;
+
+  --f-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --f-body:    'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --f-data:    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:      #101315;
+    --surface:    #171B1E;
+    --ink:        #EBEEEA;
+    --ink-2:      #BDC4C7;
+    --muted:      #8B9499;
+    --rule:       #2B3135;
+    --rule-soft:  #21262A;
+    --cobalt:     #94AEEC;
+    --cobalt-soft:#1A2337;
+    --amber:      #DCAF67;
+    --amber-soft: #2A2317;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper:      #101315;
+  --surface:    #171B1E;
+  --ink:        #EBEEEA;
+  --ink-2:      #BDC4C7;
+  --muted:      #8B9499;
+  --rule:       #2B3135;
+  --rule-soft:  #21262A;
+  --cobalt:     #94AEEC;
+  --cobalt-soft:#1A2337;
+  --amber:      #DCAF67;
+  --amber-soft: #2A2317;
+  color-scheme: dark;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink-2);
+  font-family: var(--f-body);
+  font-size: 15px;
+  line-height: 1.62;
+  font-weight: 400;
+}
+
+.sheet {
+  max-width: 920px;
+  margin: 0 auto;
+  padding-inline: 20px;
+  padding-block: 40px 88px;
+}
+
+/* ── TYPE ─────────────────────────────────────────── */
+h1, h2, h3 { color: var(--ink); text-wrap: balance; margin: 0; font-weight: 500; }
+h1 { font-family: var(--f-display); font-size: clamp(30px, 5.4vw, 44px); line-height: 1.08; letter-spacing: -0.015em; }
+h2 { font-family: var(--f-display); font-size: clamp(21px, 3.2vw, 27px); line-height: 1.2; letter-spacing: -0.01em; }
+h3 { font-family: var(--f-body); font-size: 15px; font-weight: 600; letter-spacing: 0.005em; }
+p  { margin: 0; max-width: 68ch; }
+strong { color: var(--ink); font-weight: 600; }
+a { color: var(--cobalt); text-underline-offset: 3px; }
+
+.eyebrow {
+  font-family: var(--f-data);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cobalt);
+}
+.num { font-family: var(--f-data); font-variant-numeric: tabular-nums; }
+
+/* ── HEADER ───────────────────────────────────────── */
+.masthead {
+  display: flex; flex-wrap: wrap; gap: 20px 32px;
+  align-items: flex-end; justify-content: space-between;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--ink);
+}
+.wordmark {
+  font-family: var(--f-display);
+  font-size: 30px; line-height: 1;
+  letter-spacing: 0.22em; color: var(--ink);
+  text-transform: uppercase;
+}
+.wordmark + .addr {
+  margin-top: 10px; font-size: 12.5px; line-height: 1.55; color: var(--muted);
+}
+.docref { text-align: right; font-family: var(--f-data); font-size: 12px; line-height: 1.7; color: var(--muted); }
+.docref b { display: block; color: var(--ink); font-weight: 500; letter-spacing: 0.04em; }
+
+.title-block { margin-top: 38px; display: flex; flex-direction: column; gap: 14px; }
+.lede { font-size: 17px; line-height: 1.6; color: var(--ink-2); max-width: 60ch; }
+
+.parties {
+  margin-top: 30px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1px; background: var(--rule);
+  border: 1px solid var(--rule);
+}
+.party { background: var(--surface); padding: 16px 18px; display: flex; flex-direction: column; gap: 5px; }
+.party .k { font-family: var(--f-data); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.party .v { color: var(--ink); font-weight: 500; }
+.party .s { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+/* ── SECTIONS ─────────────────────────────────────── */
+section { margin-top: 58px; display: flex; flex-direction: column; gap: 18px; }
+.sec-head { display: flex; flex-direction: column; gap: 7px; padding-bottom: 12px; border-bottom: 1px solid var(--rule); }
+
+/* ── BRIEF ────────────────────────────────────────── */
+.brief {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px;
+}
+.brief-line {
+  background: var(--surface); border: 1px solid var(--rule-soft);
+  border-left: 2px solid var(--cobalt);
+  padding: 12px 15px; display: flex; gap: 12px; align-items: baseline;
+}
+.brief-line .i { font-family: var(--f-data); font-size: 11px; color: var(--cobalt); flex: 0 0 auto; }
+.brief-line .t { font-size: 13.5px; line-height: 1.45; }
+.brief-line .t b { display: block; color: var(--ink); font-weight: 600; font-family: var(--f-data); font-size: 13px; }
+
+/* ── SCALE DRAWING ────────────────────────────────── */
+.plate-scale { border: 1px solid var(--rule); background: var(--surface); padding: 18px 16px 12px; overflow-x: auto; }
+.plate-scale svg { display: block; min-width: 660px; width: 100%; height: auto; }
+.plate-scale .pl-stroke { stroke: var(--cobalt); }
+.plate-scale .pl-dim { fill: var(--ink); }
+.plate-scale .pl-use { fill: var(--muted); }
+.plate-scale .cap { font-size: 12.5px; color: var(--muted); margin-top: 10px; }
+
+/* ── TABLES ───────────────────────────────────────── */
+.tw { overflow-x: auto; border: 1px solid var(--rule); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 13.5px; }
+caption { text-align: left; padding: 14px 16px 0; font-size: 12.5px; color: var(--muted); }
+th, td { padding: 11px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--rule-soft); }
+thead th {
+  font-family: var(--f-data); font-size: 10px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  border-bottom: 1px solid var(--rule); white-space: nowrap;
+}
+td.r, th.r { text-align: right; }
+td.n { font-family: var(--f-data); font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
+td .sub { display: block; font-size: 12px; color: var(--muted); line-height: 1.45; margin-top: 3px; }
+tbody tr:last-child td { border-bottom: none; }
+tr.total td { border-top: 1px solid var(--rule); background: var(--cobalt-soft); color: var(--ink); font-weight: 600; }
+tr.total td.n { font-weight: 500; }
+
+/* ── RECAP ────────────────────────────────────────── */
+.recap { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.recap > div { background: var(--surface); padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; }
+.recap .k { font-family: var(--f-data); font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); }
+.recap .v { font-family: var(--f-data); font-variant-numeric: tabular-nums; font-size: 21px; color: var(--ink); }
+.recap .x { font-size: 12px; color: var(--muted); }
+.recap .hi { background: var(--cobalt); }
+.recap .hi .k, .recap .hi .x { color: rgba(255,255,255,0.72); }
+.recap .hi .v { color: #FFFFFF; }
+:root[data-theme="dark"] .recap .hi, :root:not([data-theme="light"]) .recap .hi { background: var(--cobalt-soft); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .recap .hi .k, :root:not([data-theme="light"]) .recap .hi .x { color: var(--muted); }
+  :root:not([data-theme="light"]) .recap .hi .v { color: var(--cobalt); }
+}
+:root[data-theme="dark"] .recap .hi .k, :root[data-theme="dark"] .recap .hi .x { color: var(--muted); }
+:root[data-theme="dark"] .recap .hi .v { color: var(--cobalt); }
+
+/* ── LISTS ────────────────────────────────────────── */
+ul.clean { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 11px; }
+ul.clean > li { display: grid; grid-template-columns: 22px 1fr; gap: 12px; font-size: 14px; max-width: 74ch; }
+ul.clean > li::before { content: attr(data-m); font-family: var(--f-data); font-size: 11px; color: var(--cobalt); line-height: 1.85; }
+
+/* ── BLOCKS ───────────────────────────────────────── */
+.note {
+  background: var(--amber-soft); border: 1px solid var(--amber);
+  padding: 18px 20px; display: flex; flex-direction: column; gap: 12px;
+}
+.note .tag {
+  font-family: var(--f-data); font-size: 10px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--amber); font-weight: 500;
+}
+.note h3 { color: var(--ink); }
+.note p, .note li { color: var(--ink-2); }
+
+.terms { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.term { background: var(--surface); padding: 15px 18px; display: flex; flex-direction: column; gap: 4px; }
+.term .k { font-family: var(--f-data); font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); }
+.term .v { font-size: 13.5px; color: var(--ink-2); }
+.term .v b { color: var(--ink); }
+
+.sign { margin-top: 58px; padding-top: 22px; border-top: 2px solid var(--ink); display: flex; flex-wrap: wrap; gap: 28px; justify-content: space-between; align-items: flex-start; }
+.sign .box { flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px; }
+.sign .k { font-family: var(--f-data); font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); }
+.sign .line { margin-top: 44px; border-bottom: 1px solid var(--rule); }
+.sign .s { font-size: 12px; color: var(--muted); }
+
+footer { margin-top: 44px; font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+@media (max-width: 560px) {
+  .docref { text-align: left; }
+  .sheet { padding-block: 28px 64px; }
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="masthead">
+    <div>
+      <div class="wordmark">Beyt</div>
+      <div class="addr">
+        11 rue Kadi Iass, Maarif, Casablanca<br>
+        contact@beyt.ma · beyt.ma
+      </div>
+    </div>
+    <div class="docref">
+      <b>Devis BEYT-DEV-2609-YY-v02</b>
+      Émis le 21 septembre 2026<br>
+      Valable jusqu'au 21 octobre 2026<br>
+      Monnaie : dirham (MAD), HT
+    </div>
+  </header>
+
+  <div class="title-block">
+    <span class="eyebrow">Production céramique · art de la table</span>
+    <h1>Assiettes pour Younes Yazami</h1>
+    <p class="lede">
+      Sept formats, 370 pièces. Cinq lignes sont chiffrées au tarif Polpo et Sfenj en vigueur,
+      sans majoration d'aucune sorte. Deux formats n'existent pas au catalogue : leur prix
+      reste à fixer.
+    </p>
+  </div>
+
+  <div class="parties">
+    <div class="party">
+      <span class="k">Client</span>
+      <span class="v">Younes Yazami</span>
+      <span class="s">Coordonnées de facturation à compléter</span>
+    </div>
+    <div class="party">
+      <span class="k">Objet</span>
+      <span class="v">Service d'assiettes, 7 formats</span>
+      <span class="s">370 pièces · céramique émaillée</span>
+    </div>
+    <div class="party">
+      <span class="k">Base tarifaire</span>
+      <span class="v">Tarif Polpo et Sfenj en vigueur</span>
+      <span class="s">Fiche prix wholesale v08 du 30/08/2026</span>
+    </div>
+  </div>
+
+  <!-- 01 -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">01 · Lecture du brief</span>
+      <h2>Ce que dit la note manuscrite</h2>
+    </div>
+    <p>
+      Transcription ligne à ligne de la note remise. Les six lignes numérotées, plus la ligne
+      « café gourmand » ajoutée en marge, donnent <strong>sept références et 370 pièces</strong>.
+    </p>
+    <div class="brief">
+      <div class="brief-line"><span class="i">&#9312;</span><span class="t"><b>&Oslash; 18 cm &times; 60</b>Entremets</span></div>
+      <div class="brief-line"><span class="i">&#9313;</span><span class="t"><b>&Oslash; 22 cm &times; 60</b>Classique, format moyen</span></div>
+      <div class="brief-line"><span class="i">&#9314;</span><span class="t"><b>&Oslash; 28 cm &times; 60</b>Plat principal</span></div>
+      <div class="brief-line"><span class="i">&#9315;</span><span class="t"><b>&Oslash; 28 cm &times; 60</b>Creuse, bassin &Oslash; 20 cm</span></div>
+      <div class="brief-line"><span class="i">&#9316;</span><span class="t"><b>&Oslash; 25 cm &times; 60</b>Creuse, salade</span></div>
+      <div class="brief-line"><span class="i">+</span><span class="t"><b>Café gourmand &times; 30</b>Format non précisé</span></div>
+      <div class="brief-line"><span class="i">&#9317;</span><span class="t"><b>Ovales &times; 40</b>Dimensions non précisées</span></div>
+    </div>
+  </section>
+
+  <!-- PLANCHE -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Planche des formats</span>
+      <h2>Les sept pièces à l'échelle</h2>
+    </div>
+    <div class="plate-scale">
+      <svg viewBox="0 0 2090 400" role="img" aria-label="Les sept formats d'assiettes dessinés à la même échelle : 18, 22 et 28 cm de diamètre, une creuse de 28 cm à bassin de 20 cm, une creuse de 25 cm, un café gourmand oblong de 30 sur 12 cm et un ovale de 30 sur 21 cm.">
+        <g class="pl-stroke" fill="none" stroke-width="5">
+          <circle cx="100"  cy="150" r="90"/>
+          <circle cx="340"  cy="150" r="110"/>
+          <circle cx="630"  cy="150" r="140"/>
+          <circle cx="950"  cy="150" r="140"/>
+          <circle cx="950"  cy="150" r="100" stroke-dasharray="14 10" stroke-width="4"/>
+          <circle cx="1255" cy="150" r="125"/>
+          <circle cx="1255" cy="150" r="88" stroke-dasharray="14 10" stroke-width="4"/>
+          <rect x="1420" y="90" width="300" height="120" rx="18"/>
+          <ellipse cx="1910" cy="150" rx="150" ry="105"/>
+        </g>
+        <g class="pl-dim" font-family="'IBM Plex Mono', monospace" font-size="30" text-anchor="middle">
+          <text x="100"  y="330">&#216;18</text>
+          <text x="340"  y="330">&#216;22</text>
+          <text x="630"  y="330">&#216;28</text>
+          <text x="950"  y="330">&#216;28 / 20</text>
+          <text x="1255" y="330">&#216;25</text>
+          <text x="1570" y="330">30 &#215; 12</text>
+          <text x="1910" y="330">30 &#215; 21</text>
+        </g>
+        <g class="pl-use" font-family="Archivo, Arial, sans-serif" font-size="26" text-anchor="middle">
+          <text x="100"  y="372">Polpo Petit</text>
+          <text x="340"  y="372">Polpo Moyen</text>
+          <text x="630"  y="372">Polpo Grand</text>
+          <text x="950"  y="372">prix à définir</text>
+          <text x="1255" y="372">Sfenj Grand</text>
+          <text x="1570" y="372">prix à définir</text>
+          <text x="1910" y="372">Plateau Polpo G</text>
+        </g>
+      </svg>
+      <p class="cap">
+        Dessin à l'échelle, en centimètres. Trait plein : diamètre hors-tout. Trait pointillé :
+        bassin creux. Sous chaque pièce, la référence du catalogue dont le prix est repris.
+      </p>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">02 · Règle appliquée</span>
+      <h2>Comment chaque prix est repris</h2>
+    </div>
+    <p>
+      Une seule règle : <strong>chaque ligne prend le prix d'une référence qui existe déjà</strong>,
+      tel quel. Les assiettes plates suivent le tarif Polpo, les creuses le tarif Sfenj, à taille
+      correspondante. Un ou deux centimètres d'écart avec la référence ne changent pas le prix.
+      Rien n'est majoré, rien n'est interpolé.
+    </p>
+    <ul class="clean">
+      <li data-m="&rarr;"><strong>Assiettes plates &rarr; Polpo.</strong> Petit &Oslash;17 &agrave; 80 MAD, Moyen &Oslash;22 &agrave; 100 MAD, Grand &Oslash;27 &agrave; 135 MAD.</li>
+      <li data-m="&rarr;"><strong>Assiettes creuses &rarr; Sfenj.</strong> Petit &Oslash;17&times;H5 &agrave; 80 MAD, Moyen &Oslash;21&times;H5 &agrave; 100 MAD, Grand &Oslash;25&times;H5 &agrave; 135 MAD.</li>
+      <li data-m="&rarr;"><strong>Formes longues &rarr; plateaux Polpo.</strong> Petit L24&times;l17 &agrave; 125 MAD, Grand L30&times;l21 &agrave; 200 MAD.</li>
+      <li data-m="&rarr;"><strong>Au-delà de deux centimètres d'écart, on ne reprend pas.</strong> La ligne est laissée sans prix et vous revient.</li>
+    </ul>
+    <p>
+      Source unique : <strong>fiche de prix wholesale BEYT v08 du 30 août 2026</strong>, prix de
+      gros HT en dirhams. Le prix ne dépend pas du coloris.
+    </p>
+  </section>
+
+  <!-- 03 -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">03 · Le devis</span>
+      <h2>Détail par référence</h2>
+    </div>
+    <div class="tw">
+      <table>
+        <caption>Prix de gros HT, en dirhams. L'euro vaut le dirham divisé par dix, conformément à la grille 2026.</caption>
+        <thead>
+          <tr>
+            <th>Réf.</th>
+            <th>Désignation et prix repris</th>
+            <th class="r">Qté</th>
+            <th class="r">PU HT</th>
+            <th class="r">Total HT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="n">YY-01</td>
+            <td>Assiette plate &Oslash; 18 cm, entremets<span class="sub">BEYT-V-POL-ASS-P, Assiette Polpo Petit &Oslash;17 &mdash; 80 MAD. Écart 1 cm.</span></td>
+            <td class="r n">60</td><td class="r n">80,00</td><td class="r n">4 800</td>
+          </tr>
+          <tr>
+            <td class="n">YY-02</td>
+            <td>Assiette plate &Oslash; 22 cm, classique<span class="sub">BEYT-V-POL-ASS-M, Assiette Polpo Moyen &Oslash;22 &mdash; 100 MAD. Format identique.</span></td>
+            <td class="r n">60</td><td class="r n">100,00</td><td class="r n">6 000</td>
+          </tr>
+          <tr>
+            <td class="n">YY-03</td>
+            <td>Assiette plate &Oslash; 28 cm, plat principal<span class="sub">BEYT-V-POL-ASS-G, Assiette Polpo Grand &Oslash;27 &mdash; 135 MAD. Écart 1 cm.</span></td>
+            <td class="r n">60</td><td class="r n">135,00</td><td class="r n">8 100</td>
+          </tr>
+          <tr>
+            <td class="n">YY-04</td>
+            <td>Assiette creuse &Oslash; 28 cm, bassin &Oslash; 20 cm<span class="sub">Sfenj s'arrête au Grand &Oslash;25. Écart de 3 cm, au-delà de la tolérance &mdash; prix à définir.</span></td>
+            <td class="r n">60</td><td class="r n">&mdash;</td><td class="r n">à définir</td>
+          </tr>
+          <tr>
+            <td class="n">YY-05</td>
+            <td>Assiette creuse &Oslash; 25 cm, salade<span class="sub">BEYT-V-SFE-ASS-G, Assiette Sfenj Grand &Oslash;25&times;H5 &mdash; 135 MAD. Format identique.</span></td>
+            <td class="r n">60</td><td class="r n">135,00</td><td class="r n">8 100</td>
+          </tr>
+          <tr>
+            <td class="n">YY-06</td>
+            <td>Assiette café gourmand, oblongue 30 &times; 12 cm<span class="sub">Aucune référence approchante. Les plateaux Polpo font l24 &times; 17 et l30 &times; 21 &mdash; prix à définir.</span></td>
+            <td class="r n">30</td><td class="r n">&mdash;</td><td class="r n">à définir</td>
+          </tr>
+          <tr>
+            <td class="n">YY-07</td>
+            <td>Assiette ovale 30 &times; 21 cm<span class="sub">BEYT-V-POL-PLA-G, Plateau Polpo Grand L30&times;l21 &mdash; 200 MAD. Dimensions identiques, forme à confirmer.</span></td>
+            <td class="r n">40</td><td class="r n">200,00</td><td class="r n">8 000</td>
+          </tr>
+          <tr class="total">
+            <td colspan="2">Sous-total des 5 lignes chiffrées</td>
+            <td class="r n">280</td>
+            <td class="r n">125,00<span class="sub">moyenne</span></td>
+            <td class="r n">35 000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="recap">
+      <div><span class="k">Sous-total HT</span><span class="v">35 000 MAD</span><span class="x">soit 3 500 € · 280 pièces</span></div>
+      <div><span class="k">TVA 20 %</span><span class="v">7 000 MAD</span><span class="x">taux Maroc</span></div>
+      <div class="hi"><span class="k">Sous-total TTC</span><span class="v">42 000 MAD</span><span class="x">hors 2 lignes à chiffrer</span></div>
+      <div><span class="k">Reste à chiffrer</span><span class="v">90 pièces</span><span class="x">lignes YY-04 et YY-06</span></div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">04 · Ce qui manque</span>
+      <h2>Trois questions, et le devis est complet</h2>
+    </div>
+    <div class="note">
+      <span class="tag">Prix à définir · réponse attendue de Saad</span>
+      <h3>1 &middot; Assiette creuse &Oslash; 28 cm, bassin &Oslash; 20 &mdash; 60 pièces</h3>
+      <p>
+        La gamme Sfenj s'arrête au Grand, &Oslash; 25 cm à 135 MAD. Le format demandé fait trois
+        centimètres de plus, au-delà de la tolérance d'un ou deux centimètres. Deux réponses
+        possibles : on l'assimile au Sfenj Grand à <strong>135 MAD</strong>, ou le format
+        justifie un prix au-dessus &mdash; à fixer.
+      </p>
+      <h3>2 &middot; Assiette café gourmand, oblongue &mdash; 30 pièces</h3>
+      <p>
+        Aucune référence approchante au catalogue. Les deux seules pièces non rondes sont les
+        plateaux Polpo, L24 &times; l17 à 125 MAD et L30 &times; l21 à 200 MAD, tous deux bien
+        plus larges qu'une plaque à café gourmand. Prix à donner &mdash; et format à arrêter,
+        les 30 &times; 12 cm du dessin ci-dessus restant une hypothèse.
+      </p>
+      <h3>3 &middot; Assiette ovale &mdash; à confirmer</h3>
+      <p>
+        Chiffrée à <strong>200 MAD</strong>, le prix du Plateau Polpo Grand, dont elle reprend
+        exactement les dimensions, L30 &times; l21. Reste qu'un plateau n'est pas une assiette
+        ovale : si la pièce est plus simple à façonner, le prix doit descendre.
+      </p>
+    </div>
+    <p>
+      À titre d'ordre de grandeur, si la ligne YY-04 était assimilée au Sfenj Grand et la
+      YY-06 au petit plateau Polpo, le devis complet ressortirait autour de
+      <strong>46 850 MAD HT</strong>, soit 56 220 TTC pour 370 pièces. Projection, non
+      contractuelle.
+    </p>
+  </section>
+
+  <!-- 05 -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">05 · Options</span>
+      <h2>Trois lignes à décider</h2>
+    </div>
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>Option</th><th>Ce qu'elle couvre</th><th class="r">Montant HT</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>A &middot; Réserve de casse</strong><span class="sub">Recommandée</span></td>
+            <td>+ 12,5 % sur chaque ligne, soit 37 pièces sur les cinq lignes chiffrées. Couvre la casse en production et en service, et évite une relance de four à l'unité dans six mois. C'est le buffer appliqué sur le devis Septem.</td>
+            <td class="r n">4 600</td>
+          </tr>
+          <tr>
+            <td><strong>B &middot; Marquage logo</strong></td>
+            <td>Logo peint à la main sous émail, une couleur. Aucun tarif de marquage n'existe au catalogue : prix à la pièce à fixer.</td>
+            <td class="r n">à définir</td>
+          </tr>
+          <tr>
+            <td><strong>C &middot; Moules des formes nouvelles</strong></td>
+            <td>La creuse &Oslash; 28 à bassin, la plaque à café gourmand et, si elle diffère du plateau, l'ovale. Aucun tarif d'outillage n'existe au catalogue : coût par forme à fixer, ou à amortir dans les prix unitaires.</td>
+            <td class="r n">à définir</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">06 · Contrôle</span>
+      <h2>Le point à vérifier avant d'envoyer</h2>
+    </div>
+    <div class="note">
+      <span class="tag">Note interne · à retirer de la version client</span>
+      <h3>La marge n'est pas vérifiable avec les données disponibles</h3>
+      <p>
+        Le seul chiffrage de coût de revient documenté est celui du devis Septem, et ses coûts
+        sont transposés de pièces sculpturales &mdash; vases, saladiers, bougeoirs &mdash; pas
+        de vaisselle plate. Appliqués tels quels, ils rendraient plusieurs lignes déficitaires,
+        ce qui est incohérent avec une grille de gros qui vend un &Oslash; 17 à 80 MAD depuis 2026.
+        Ces coûts sont trop hauts pour de l'assiette simple.
+      </p>
+      <p>
+        Ci-dessous le seuil de coût atelier à ne pas dépasser pour tenir <strong>40 % de marge
+        brute</strong>, le bas de la fourchette BtoB observée chez BEYT (37 à 50 %). Un relevé
+        de coût réel sur une assiette plate suffit à trancher. Ces prix étant ceux du catalogue,
+        la question dépasse ce devis : elle vaut pour toute la grille.
+      </p>
+      <div class="tw">
+        <table>
+          <thead>
+            <tr><th>Réf.</th><th>Pièce</th><th class="r">PU HT</th><th class="r">Coût max. à 40 %</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="n">YY-01</td><td>Plate &Oslash; 18 &mdash; Polpo Petit</td><td class="r n">80</td><td class="r n">48</td></tr>
+            <tr><td class="n">YY-02</td><td>Plate &Oslash; 22 &mdash; Polpo Moyen</td><td class="r n">100</td><td class="r n">60</td></tr>
+            <tr><td class="n">YY-03</td><td>Plate &Oslash; 28 &mdash; Polpo Grand</td><td class="r n">135</td><td class="r n">81</td></tr>
+            <tr><td class="n">YY-05</td><td>Creuse &Oslash; 25 &mdash; Sfenj Grand</td><td class="r n">135</td><td class="r n">81</td></tr>
+            <tr><td class="n">YY-07</td><td>Ovale 30 &times; 21 &mdash; Plateau Polpo G</td><td class="r n">200</td><td class="r n">120</td></tr>
+            <tr class="total"><td colspan="2">Les 5 lignes chiffrées</td><td class="r n">35 000</td><td class="r n">21 000</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">07 · Conditions</span>
+      <h2>Modalités</h2>
+    </div>
+    <div class="terms">
+      <div class="term"><span class="k">Règlement</span><span class="v"><b>50 % à la commande</b>, solde à la livraison. Cohérent avec les devis Villa Sahrai et Septem.</span></div>
+      <div class="term"><span class="k">Prototypes</span><span class="v"><b>2 à 3 semaines</b> pour les formes qui n'existent pas au catalogue, avant lancement de la série.</span></div>
+      <div class="term"><span class="k">Production</span><span class="v"><b>6 à 8 semaines</b> après validation des prototypes et réception de l'acompte.</span></div>
+      <div class="term"><span class="k">Livraison</span><span class="v">FCA Casablanca, locaux BEYT, Incoterms 2020. Livraison sur site à chiffrer séparément.</span></div>
+      <div class="term"><span class="k">Matière</span><span class="v">Argile blanche alimentaire, émail food safe. Lavage à la main recommandé pour préserver la brillance.</span></div>
+      <div class="term"><span class="k">Tolérances</span><span class="v">Pièces façonnées à la main : variations de dimension de ±3 à 5 % et nuances de teinte inhérentes au procédé.</span></div>
+      <div class="term"><span class="k">Validité</span><span class="v">30 jours, jusqu'au <b>21 octobre 2026</b>.</span></div>
+      <div class="term"><span class="k">Devise</span><span class="v">Prix en dirhams, HT. Le prix en dirhams fait foi ; l'euro vaut le dirham divisé par dix.</span></div>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">08 · À trancher avec le client</span>
+      <h2>Cinq questions à Younes Yazami</h2>
+    </div>
+    <ul class="clean">
+      <li data-m="1"><strong>Décor et coloris.</strong> Le prix de gros ne dépend pas du coloris, mais la note ne dit rien du décor. Polpo et Sfenj n'ont pas le même motif.</li>
+      <li data-m="2"><strong>Profondeur des bassins</strong> des lignes &#9315; et &#9316;, et diamètre du bassin de la &#9316;.</li>
+      <li data-m="3"><strong>Forme exacte du café gourmand.</strong> Oblongue à trois emplacements, ou plateau rond ? C'est ce qui conditionne son prix.</li>
+      <li data-m="4"><strong>Dimensions de l'ovale.</strong> 30 &times; 21 cm est l'hypothèse retenue, parce qu'elle tombe sur le plateau Polpo Grand.</li>
+      <li data-m="5"><strong>« Classique MED »</strong> &mdash; confirmer qu'il s'agit bien du format moyen.</li>
+    </ul>
+  </section>
+
+  <div class="sign">
+    <div class="box">
+      <span class="k">Pour BEYT</span>
+      <span class="line"></span>
+      <span class="s">Nom, date et signature</span>
+    </div>
+    <div class="box">
+      <span class="k">Bon pour accord · Younes Yazami</span>
+      <span class="line"></span>
+      <span class="s">Nom, date, signature et cachet</span>
+    </div>
+  </div>
+
+  <footer>
+    Devis BEYT-DEV-2609-YY-v02 · 21 septembre 2026 · Document confidentiel.<br>
+    Prix repris ligne à ligne de la fiche de prix wholesale BEYT v08 du 30 août 2026,
+    références Polpo pour les assiettes plates et Sfenj pour les creuses. Aucun coefficient
+    n'a été ajouté à la grille.
+  </footer>
+
+</main>
+</body>
+</html>
