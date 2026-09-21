@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Marges assiettes Yazami</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --paper:      #F4F5F2;
+  --surface:    #FFFFFF;
+  --ink:        #15181B;
+  --ink-2:      #454D53;
+  --muted:      #78828A;
+  --rule:       #DCE0DD;
+  --rule-soft:  #E8EBE7;
+  --cobalt:     #23459A;
+  --cobalt-soft:#E6EAF6;
+  --amber:      #7F5410;
+  --amber-soft: #F4EDDD;
+
+  --f-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --f-body:    'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --f-data:    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:      #101315;
+    --surface:    #171B1E;
+    --ink:        #EBEEEA;
+    --ink-2:      #BDC4C7;
+    --muted:      #8B9499;
+    --rule:       #2B3135;
+    --rule-soft:  #21262A;
+    --cobalt:     #94AEEC;
+    --cobalt-soft:#1A2337;
+    --amber:      #DCAF67;
+    --amber-soft: #2A2317;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper:      #101315;
+  --surface:    #171B1E;
+  --ink:        #EBEEEA;
+  --ink-2:      #BDC4C7;
+  --muted:      #8B9499;
+  --rule:       #2B3135;
+  --rule-soft:  #21262A;
+  --cobalt:     #94AEEC;
+  --cobalt-soft:#1A2337;
+  --amber:      #DCAF67;
+  --amber-soft: #2A2317;
+  color-scheme: dark;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink-2);
+  font-family: var(--f-body);
+  font-size: 15px;
+  line-height: 1.62;
+  font-weight: 400;
+}
+
+.sheet {
+  max-width: 920px;
+  margin: 0 auto;
+  padding-inline: 20px;
+  padding-block: 40px 88px;
+}
+
+/* ── TYPE ─────────────────────────────────────────── */
+h1, h2, h3 { color: var(--ink); text-wrap: balance; margin: 0; font-weight: 500; }
+h1 { font-family: var(--f-display); font-size: clamp(30px, 5.4vw, 44px); line-height: 1.08; letter-spacing: -0.015em; }
+h2 { font-family: var(--f-display); font-size: clamp(21px, 3.2vw, 27px); line-height: 1.2; letter-spacing: -0.01em; }
+h3 { font-family: var(--f-body); font-size: 15px; font-weight: 600; letter-spacing: 0.005em; }
+p  { margin: 0; max-width: 68ch; }
+strong { color: var(--ink); font-weight: 600; }
+a { color: var(--cobalt); text-underline-offset: 3px; }
+
+.eyebrow {
+  font-family: var(--f-data);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cobalt);
+}
+.num { font-family: var(--f-data); font-variant-numeric: tabular-nums; }
+
+/* ── HEADER ───────────────────────────────────────── */
+.masthead {
+  display: flex; flex-wrap: wrap; gap: 20px 32px;
+  align-items: flex-end; justify-content: space-between;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--ink);
+}
+.wordmark {
+  font-family: var(--f-display);
+  font-size: 30px; line-height: 1;
+  letter-spacing: 0.22em; color: var(--ink);
+  text-transform: uppercase;
+}
+.wordmark + .addr {
+  margin-top: 10px; font-size: 12.5px; line-height: 1.55; color: var(--muted);
+}
+.docref { text-align: right; font-family: var(--f-data); font-size: 12px; line-height: 1.7; color: var(--muted); }
+.docref b { display: block; color: var(--ink); font-weight: 500; letter-spacing: 0.04em; }
+
+.title-block { margin-top: 38px; display: flex; flex-direction: column; gap: 14px; }
+.lede { font-size: 17px; line-height: 1.6; color: var(--ink-2); max-width: 60ch; }
+
+.parties {
+  margin-top: 30px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1px; background: var(--rule);
+  border: 1px solid var(--rule);
+}
+.party { background: var(--surface); padding: 16px 18px; display: flex; flex-direction: column; gap: 5px; }
+.party .k { font-family: var(--f-data); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.party .v { color: var(--ink); font-weight: 500; }
+.party .s { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+/* ── SECTIONS ─────────────────────────────────────── */
+section { margin-top: 58px; display: flex; flex-direction: column; gap: 18px; }
+.sec-head { display: flex; flex-direction: column; gap: 7px; padding-bottom: 12px; border-bottom: 1px solid var(--rule); }
+
+/* ── BRIEF ────────────────────────────────────────── */
+.brief {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px;
+}
+.brief-line {
+  background: var(--surface); border: 1px solid var(--rule-soft);
+  border-left: 2px solid var(--cobalt);
+  padding: 12px 15px; display: flex; gap: 12px; align-items: baseline;
+}
+.brief-line .i { font-family: var(--f-data); font-size: 11px; color: var(--cobalt); flex: 0 0 auto; }
+.brief-line .t { font-size: 13.5px; line-height: 1.45; }
+.brief-line .t b { display: block; color: var(--ink); font-weight: 600; font-family: var(--f-data); font-size: 13px; }
+
+/* ── SCALE DRAWING ────────────────────────────────── */
+.plate-scale { border: 1px solid var(--rule); background: var(--surface); padding: 18px 16px 12px; overflow-x: auto; }
+.plate-scale svg { display: block; min-width: 660px; width: 100%; height: auto; }
+.plate-scale .pl-stroke { stroke: var(--cobalt); }
+.plate-scale .pl-dim { fill: var(--ink); }
+.plate-scale .pl-use { fill: var(--muted); }
+.plate-scale .cap { font-size: 12.5px; color: var(--muted); margin-top: 10px; }
+
+/* ── TABLES ───────────────────────────────────────── */
+.tw { overflow-x: auto; border: 1px solid var(--rule); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 13.5px; }
+caption { text-align: left; padding: 14px 16px 0; font-size: 12.5px; color: var(--muted); }
+th, td { padding: 11px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--rule-soft); }
+thead th {
+  font-family: var(--f-data); font-size: 10px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  border-bottom: 1px solid var(--rule); white-space: nowrap;
+}
+td.r, th.r { text-align: right; }
+td.n { font-family: var(--f-data); font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
+td .sub { display: block; font-size: 12px; color: var(--muted); line-height: 1.45; margin-top: 3px; }
+tbody tr:last-child td { border-bottom: none; }
+tr.total td { border-top: 1px solid var(--rule); background: var(--cobalt-soft); color: var(--ink); font-weight: 600; }
+tr.total td.n { font-weight: 500; }
+
+/* ── RECAP ────────────────────────────────────────── */
+.recap { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.recap > div { background: var(--surface); padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; }
+.recap .k { font-family: var(--f-data); font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); }
+.recap .v { font-family: var(--f-data); font-variant-numeric: tabular-nums; font-size: 21px; color: var(--ink); }
+.recap .x { font-size: 12px; color: var(--muted); }
+.recap .hi { background: var(--cobalt); }
+.recap .hi .k, .recap .hi .x { color: rgba(255,255,255,0.72); }
+.recap .hi .v { color: #FFFFFF; }
+:root[data-theme="dark"] .recap .hi, :root:not([data-theme="light"]) .recap .hi { background: var(--cobalt-soft); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .recap .hi .k, :root:not([data-theme="light"]) .recap .hi .x { color: var(--muted); }
+  :root:not([data-theme="light"]) .recap .hi .v { color: var(--cobalt); }
+}
+:root[data-theme="dark"] .recap .hi .k, :root[data-theme="dark"] .recap .hi .x { color: var(--muted); }
+:root[data-theme="dark"] .recap .hi .v { color: var(--cobalt); }
+
+/* ── LISTS ────────────────────────────────────────── */
+ul.clean { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 11px; }
+ul.clean > li { display: grid; grid-template-columns: 22px 1fr; gap: 12px; font-size: 14px; max-width: 74ch; }
+ul.clean > li::before { content: attr(data-m); font-family: var(--f-data); font-size: 11px; color: var(--cobalt); line-height: 1.85; }
+
+/* ── BLOCKS ───────────────────────────────────────── */
+.note {
+  background: var(--amber-soft); border: 1px solid var(--amber);
+  padding: 18px 20px; display: flex; flex-direction: column; gap: 12px;
+}
+.note .tag {
+  font-family: var(--f-data); font-size: 10px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--amber); font-weight: 500;
+}
+.note h3 { color: var(--ink); }
+.note p, .note li { color: var(--ink-2); }
+
+.terms { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.term { background: var(--surface); padding: 15px 18px; display: flex; flex-direction: column; gap: 4px; }
+.term .k { font-family: var(--f-data); font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); }
+.term .v { font-size: 13.5px; color: var(--ink-2); }
+.term .v b { color: var(--ink); }
+
+.sign { margin-top: 58px; padding-top: 22px; border-top: 2px solid var(--ink); display: flex; flex-wrap: wrap; gap: 28px; justify-content: space-between; align-items: flex-start; }
+.sign .box { flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px; }
+.sign .k { font-family: var(--f-data); font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); }
+.sign .line { margin-top: 44px; border-bottom: 1px solid var(--rule); }
+.sign .s { font-size: 12px; color: var(--muted); }
+
+.stamp {
+  background: var(--amber-soft); border: 1px solid var(--amber);
+  padding: 10px 16px; margin-bottom: 26px;
+  font-family: var(--f-data); font-size: 10.5px; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber);
+}
+.flag { font-family: var(--f-data); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+.flag.bad  { color: #A32B22; }
+.flag.mid  { color: var(--amber); }
+.flag.good { color: #1C6B4A; }
+:root[data-theme="dark"] .flag.bad, :root[data-theme="dark"] .flag.good { color: inherit; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .flag.bad  { color: #E88A80; }
+  :root:not([data-theme="light"]) .flag.good { color: #6FC79B; }
+}
+:root[data-theme="dark"] .flag.bad  { color: #E88A80; }
+:root[data-theme="dark"] .flag.good { color: #6FC79B; }
+.rule-card { background: var(--surface); border: 1px solid var(--rule); padding: 16px 18px; display: flex; flex-direction: column; gap: 5px; }
+.rule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.rule-card .k { font-family: var(--f-data); font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--cobalt); }
+.rule-card .v { font-size: 13.5px; color: var(--ink-2); }
+footer { margin-top: 44px; font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+@media (max-width: 560px) {
+  .docref { text-align: left; }
+  .sheet { padding-block: 28px 64px; }
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <div class="stamp">Document interne &middot; ne pas transmettre au client &middot; contient les coûts atelier et le comparatif Chabi Chic</div>
+
+  <header class="masthead">
+    <div>
+      <div class="wordmark">Beyt</div>
+      <div class="addr">Note de marge &middot; commande Younes Yazami<br>Établie le 21 septembre 2026</div>
+    </div>
+    <div class="docref">
+      <b>Adossé au devis BEYT-DEV-2609-YY-v02</b>
+      Source : &laquo; BEYT &mdash; Prix de vente<br>et objectifs de coûts &raquo;, état du 03/09/2026<br>
+      Montants en dirhams, HT
+    </div>
+  </header>
+
+  <div class="title-block">
+    <span class="eyebrow">Coûts de revient et marge</span>
+    <h1>Ce que rapporte vraiment la commande</h1>
+    <p class="lede">
+      Les coûts atelier existent : ils sont dans le classeur maître, référence par référence.
+      Appliqués à ce devis, ils donnent <strong>49,1 % de marge brute</strong> &mdash; mais un
+      coefficient global de <strong>1,97</strong>, c'est-à-dire juste sous votre propre plancher
+      de 2&times;. Trois lignes sur cinq sont en infraction.
+    </p>
+  </div>
+
+  <!-- 01 -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">01 · À la pièce</span>
+      <h2>Coût, prix et marge par référence</h2>
+    </div>
+    <div class="tw">
+      <table>
+        <caption>Coût atelier hors packaging, prix de gros HT, tels qu'ils figurent au classeur maître.</caption>
+        <thead>
+          <tr>
+            <th>Réf.</th><th>Pièce</th><th>Prix repris</th>
+            <th class="r">Coût</th><th class="r">Gros HT</th>
+            <th class="r">Coeff.</th><th class="r">Marge</th><th>Statut grille</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="n">YY-01</td><td>Plate &Oslash; 18</td><td class="n">POL-ASS-P</td>
+              <td class="r n">45</td><td class="r n">80</td><td class="r n">1,78</td><td class="r n">43,8 %</td>
+              <td><span class="flag bad">Sous le plancher</span></td></tr>
+          <tr><td class="n">YY-02</td><td>Plate &Oslash; 22</td><td class="n">POL-ASS-M</td>
+              <td class="r n">55</td><td class="r n">100</td><td class="r n">1,82</td><td class="r n">45,0 %</td>
+              <td><span class="flag bad">Sous le plancher</span></td></tr>
+          <tr><td class="n">YY-03</td><td>Plate &Oslash; 28</td><td class="n">POL-ASS-G</td>
+              <td class="r n">75</td><td class="r n">135</td><td class="r n">1,80</td><td class="r n">44,4 %</td>
+              <td><span class="flag bad">Sous le plancher</span></td></tr>
+          <tr><td class="n">YY-04</td><td>Creuse &Oslash; 28</td><td class="n">&mdash;</td>
+              <td class="r n">?</td><td class="r n">?</td><td class="r n">&mdash;</td><td class="r n">&mdash;</td>
+              <td><span class="flag mid">À chiffrer</span></td></tr>
+          <tr><td class="n">YY-05</td><td>Creuse &Oslash; 25</td><td class="n">SFE-ASS-G</td>
+              <td class="r n">65</td><td class="r n">135</td><td class="r n">2,08</td><td class="r n">51,9 %</td>
+              <td><span class="flag mid">Marge faible</span></td></tr>
+          <tr><td class="n">YY-06</td><td>Café gourmand</td><td class="n">&mdash;</td>
+              <td class="r n">?</td><td class="r n">?</td><td class="r n">&mdash;</td><td class="r n">&mdash;</td>
+              <td><span class="flag mid">À chiffrer</span></td></tr>
+          <tr><td class="n">YY-07</td><td>Ovale 30 &times; 21</td><td class="n">POL-PLA-G</td>
+              <td class="r n">85</td><td class="r n">200</td><td class="r n">2,35</td><td class="r n">57,5 %</td>
+              <td><span class="flag mid">Marge faible</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">02 · Sur la commande</span>
+      <h2>Les 280 pièces chiffrées</h2>
+    </div>
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>Réf.</th><th>Pièce</th><th class="r">Qté</th><th class="r">Coût total</th><th class="r">CA HT</th><th class="r">Marge brute</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="n">YY-01</td><td>Plate &Oslash; 18</td><td class="r n">60</td><td class="r n">2 700</td><td class="r n">4 800</td><td class="r n">2 100</td></tr>
+          <tr><td class="n">YY-02</td><td>Plate &Oslash; 22</td><td class="r n">60</td><td class="r n">3 300</td><td class="r n">6 000</td><td class="r n">2 700</td></tr>
+          <tr><td class="n">YY-03</td><td>Plate &Oslash; 28</td><td class="r n">60</td><td class="r n">4 500</td><td class="r n">8 100</td><td class="r n">3 600</td></tr>
+          <tr><td class="n">YY-05</td><td>Creuse &Oslash; 25</td><td class="r n">60</td><td class="r n">3 900</td><td class="r n">8 100</td><td class="r n">4 200</td></tr>
+          <tr><td class="n">YY-07</td><td>Ovale 30 &times; 21</td><td class="r n">40</td><td class="r n">3 400</td><td class="r n">8 000</td><td class="r n">4 600</td></tr>
+          <tr class="total"><td colspan="2">Total</td><td class="r n">280</td><td class="r n">17 800</td><td class="r n">35 000</td><td class="r n">17 200</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="recap">
+      <div><span class="k">CA HT</span><span class="v">35 000 MAD</span><span class="x">280 pièces</span></div>
+      <div><span class="k">Coût atelier</span><span class="v">17 800 MAD</span><span class="x">hors packaging</span></div>
+      <div class="hi"><span class="k">Marge brute</span><span class="v">17 200 MAD</span><span class="x">49,1 %</span></div>
+      <div><span class="k">Coefficient global</span><span class="v">1,97</span><span class="x">plancher maison : 2,00</span></div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">03 · Le levier</span>
+      <h2>Basculer deux lignes en Sfenj change le verdict</h2>
+    </div>
+    <p>
+      À prix de vente identique, <strong>le Sfenj coûte moins cher à produire que le Polpo</strong>.
+      Le classeur le dit ligne à ligne : &Oslash; 17 à 35 contre 45, &Oslash; 21 à 50 contre 55,
+      et les deux se vendent au même prix, 80 et 100 MAD. L'écart, c'est le décor.
+    </p>
+    <p>
+      Les lignes &#9312; et &#9313; tombent à un centimètre près sur du Sfenj comme sur du Polpo.
+      Les basculer ne change ni le prix client, ni le devis, ni le délai &mdash; seulement le coût.
+    </p>
+    <div class="recap">
+      <div><span class="k">En Polpo</span><span class="v">17 200 MAD</span><span class="x">49,1 % · coeff 1,97</span></div>
+      <div class="hi"><span class="k">En Sfenj</span><span class="v">18 100 MAD</span><span class="x">51,7 % · coeff 2,07</span></div>
+      <div><span class="k">Gain</span><span class="v">+ 900 MAD</span><span class="x">et le plancher est franchi</span></div>
+    </div>
+    <p>
+      La ligne &#9314;, &Oslash; 28, ne peut pas suivre : le Sfenj s'arrête au &Oslash; 25. Elle reste
+      en Polpo, sous le plancher, et c'est la seule des trois qui n'a pas de porte de sortie
+      côté coût.
+    </p>
+  </section>
+
+  <!-- 04 -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">04 · Les deux prix manquants</span>
+      <h2>Ce que la grille impose, plutôt qu'une estimation</h2>
+    </div>
+    <p>
+      La question posée était : la creuse &Oslash; 28 vaut-elle 135 comme le Sfenj Grand ? La grille
+      répond non. Le Sfenj &Oslash; 25 coûte déjà 65 MAD ; une &Oslash; 28 à bassin profond coûtera
+      davantage &mdash; plus de terre, façonnage plus lent, casse au four plus élevée. À 135 MAD,
+      la ligne passerait sous le plancher comme les trois autres.
+    </p>
+    <div class="tw">
+      <table>
+        <caption>Prix minimum pour respecter la règle 1 du classeur, selon le coût atelier retenu.</caption>
+        <thead>
+          <tr><th>Réf.</th><th>Hypothèse de coût</th><th class="r">Plancher (2&times;)</th><th class="r">Sain (2,7&times;)</th><th class="r">Prix proposé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="n">YY-04</td><td>Creuse &Oslash; 28 &mdash; 78 MAD, soit le Sfenj &Oslash; 25 majoré de 20 %</td><td class="r n">156</td><td class="r n">211</td><td class="r n">160 à 180</td></tr>
+          <tr><td class="n">YY-06</td><td>Café gourmand &mdash; 60 MAD, entre le Plateau Petit (55) et le Grand (85)</td><td class="r n">120</td><td class="r n">162</td><td class="r n">150</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Avec 170 et 150, le devis complet ressort à <strong>49 700 MAD HT</strong> pour 370 pièces,
+      et le coefficient global remonte à <strong>2,05</strong> &mdash; au-dessus du plancher, sans
+      toucher aux cinq lignes catalogue. Ces deux chiffres restent les vôtres à arrêter : le coût
+      atelier de ces deux formes n'a jamais été relevé.
+    </p>
+  </section>
+
+  <!-- 05 -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">05 · Les règles appliquées</span>
+      <h2>D'où viennent les verdicts</h2>
+    </div>
+    <div class="rule-grid">
+      <div class="rule-card"><span class="k">Règle 1 · Le plancher</span><span class="v">Le prix de gros ne descend jamais sous <b>2&times; le coût atelier</b>. Sain à partir de 2,7&times;.</span></div>
+      <div class="rule-card"><span class="k">Règle 2 · Le plafond marché</span><span class="v">Sur assiettes, bols et plateaux, le gros vise <b>Chabi Chic moins 10 %</b>. En cas de conflit, le plancher gagne.</span></div>
+      <div class="rule-card"><span class="k">Principe</span><span class="v">Le prix se fixe à ce que le marché permet. <b>C'est le coût qui s'ajuste</b> pour tenir la marge.</span></div>
+    </div>
+    <p>
+      Ces deux règles expliquent pourquoi les assiettes plates sont coincées. Le prix est déjà
+      calé au plafond marché &mdash; 80, 100 et 135 MAD valent très exactement le tarif Chabi Chic
+      moins 10 %. <strong>Remonter le prix sortirait du marché ; le levier est donc le coût</strong>,
+      et le classeur chiffre l'effort : 5 MAD à gagner sur le &Oslash; 17, 5 sur le &Oslash; 22,
+      7 sur le &Oslash; 28 pour revenir au plancher.
+    </p>
+    <p>
+      Une exception, la ligne &#9317;. L'ovale à 200 MAD est <strong>9 % au-dessus</strong> du
+      plateau ovale Chabi Chic, donc au-dessus du plafond marché. La règle 1 est respectée, c'est
+      la règle 2 qui saute. Si Younes négocie, c'est la ligne qui offre le moins de résistance
+      &mdash; et celle où la marge est la meilleure.
+    </p>
+  </section>
+
+  <!-- 06 -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">06 · Portée</span>
+      <h2>Le problème dépasse ce devis</h2>
+    </div>
+    <p>
+      Les trois assiettes Polpo sont sous le plancher <strong>au catalogue</strong>, pas à cause de
+      cette commande. Le classeur les marque déjà &laquo; Sous le plancher &raquo; et &laquo; Coût
+      trop élevé &raquo;, avec une baisse de coût nécessaire de 33 à 44 %. Tout client qui commande
+      du Polpo au tarif de gros achète aujourd'hui à moins de 2&times; le coût.
+    </p>
+    <p>
+      Ce devis ne fait que le rendre visible sur un volume : <strong>180 pièces</strong> concernées
+      sur 370. C'est un arbitrage de grille, à traiter pour lui-même.
+    </p>
+  </section>
+
+  <footer>
+    Note interne BEYT &middot; 21 septembre 2026 &middot; confidentiel.<br>
+    Coûts atelier et statuts repris du classeur &laquo; BEYT &mdash; Prix de vente &amp; objectifs de
+    coûts &raquo;, état du 3 septembre 2026. Comparatif Chabi Chic : relevé du 25/08/2026,
+    médianes par format &mdash; ne sort pas de ce fichier.
+  </footer>
+
+</main>
+</body>
+</html>
