@@ -165,7 +165,7 @@
   const API_URL = '/api/atelier';
   const DEMO = location.protocol === 'file:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname) || new URLSearchParams(location.search).has('demo');
 
-  // The page never shows how many seats are left: only open / full per session.
+  // Each session shows its remaining seats.
   const DEMO_CAPACITY = 8;
   const IDS = ['mar-06-1200', 'mer-07-1500'];
   const LABELS = { 'mar-06-1200': 'Tuesday October 6 at 12:00', 'mer-07-1500': 'Wednesday October 7 at 15:00' };
@@ -190,7 +190,7 @@
     booked(rows, id) { return rows.filter(r => r.session === id).reduce((a, r) => a + r.seats, 0); },
     sessions(rows) {
       const out = {};
-      IDS.forEach(id => { out[id] = { full: demo.booked(rows, id) >= DEMO_CAPACITY }; });
+      IDS.forEach(id => { const left = Math.max(0, DEMO_CAPACITY - demo.booked(rows, id)); out[id] = { full: left <= 0, remaining: left }; });
       return out;
     },
   };
@@ -223,7 +223,9 @@
     IDS.forEach(id => {
       const s = sessions[id]; if (!s) return;
       const card = document.querySelector(`.s[data-id="${id}"]`);
-      card.querySelector('.n').textContent = s.full ? 'Fully booked' : 'Limited seats';
+      const left = s.remaining;
+      const seatsText = s.full ? 'Fully booked' : left == null ? 'Limited seats' : left === 1 ? 'Last seat left' : `${left} seats left`;
+      card.querySelector('.n').textContent = seatsText;
       const pick = card.querySelector('.pick');
       pick.textContent = s.full ? 'Fully booked' : 'Book';
       pick.toggleAttribute('aria-disabled', s.full);
@@ -232,8 +234,12 @@
       const radio = form.querySelector(`input[value="${id}"]`);
       radio.disabled = s.full;
       if (radio.disabled) radio.checked = false;
-      form.querySelector(`[data-left="${id}"]`).textContent = s.full ? 'Fully booked' : 'Flexform';
+      form.querySelector(`[data-left="${id}"]`).textContent = s.full ? 'Fully booked' : `Flexform · ${seatsText.toLowerCase()}`;
     });
+    const chosen = form.querySelector('input[name=session]:checked');
+    const leftChosen = chosen && sessions[chosen.value] ? sessions[chosen.value].remaining : null;
+    form.seats.options[1].disabled = leftChosen === 1;
+    if (leftChosen === 1) form.seats.value = '1';
     if (IDS.every(id => sessions[id] && sessions[id].full)) {
       submit.disabled = true; submit.textContent = 'All sessions are fully booked';
     }
@@ -246,8 +252,9 @@
 
   document.querySelectorAll('.s .pick').forEach(a => a.addEventListener('click', () => {
     const radio = form.querySelector(`input[value="${a.closest('.s').dataset.id}"]`);
-    if (!radio.disabled) radio.checked = true;
+    if (!radio.disabled) { radio.checked = true; render(current); }
   }));
+  form.addEventListener('change', e => { if (e.target.name === 'session') render(current); });
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
