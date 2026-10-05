@@ -12,8 +12,8 @@
 
 // ---------- Configuration ----------
 const SESSIONS = {
-  'mar-06-1200': { sheet: 'Mardi 6 oct · 12h', label: 'Mardi 6 octobre · 12:00 · Flexform', capacity: 10 },
-  'mer-07-1500': { sheet: 'Mercredi 7 oct · 15h', label: 'Mercredi 7 octobre · 15:00 · Flexform', capacity: 10 },
+  'mar-06-1200': { sheet: 'Mardi 6 oct · 12h', label: 'Tuesday October 6 · 12:00 · Flexform', capacity: 8 },
+  'mer-07-1500': { sheet: 'Mercredi 7 oct · 15h', label: 'Wednesday October 7 · 15:00 · Flexform', capacity: 8 },
 };
 const MAX_SEATS_PER_BOOKING = 2;
 const NOTIFY_EMAIL = '';                     // ex. 'studio@…' : reçoit un mail à chaque inscription ('' = désactivé)
@@ -148,14 +148,14 @@ function notify_(session, p) {
     if (SEND_CONFIRMATION) {
       MailApp.sendEmail({
         to: p.email,
-        subject: 'Atelier zellije — réservation confirmée',
+        subject: 'Zellije workshop — booking confirmed',
         name: 'The Zellijist',
         htmlBody:
-          '<p>Bonjour ' + p.firstName + ',</p>' +
-          '<p>Votre place est confirmée pour l\'atelier zellije The Zellijist × Morocco Design :</p>' +
-          '<p><b>' + session.label + '</b><br>' + p.seats + ' place(s)</p>' +
-          '<p>Showroom Flexform, Casablanca. Merci d\'arriver 10 minutes en avance.</p>' +
-          '<p>À très vite,<br>The Zellijist</p>',
+          '<p>Hello ' + p.firstName + ',</p>' +
+          '<p>Your booking is confirmed for The Zellijist × Morocco Design zellije workshop:</p>' +
+          '<p><b>' + session.label + '</b><br>' + p.seats + ' seat(s)</p>' +
+          '<p>Flexform showroom, Casablanca. Please arrive 10 minutes early.</p>' +
+          '<p>See you soon,<br>The Zellijist</p>',
       });
     }
     if (NOTIFY_EMAIL) {

@@ -83,7 +83,7 @@
     const sessions = {};
     Object.keys(labels).forEach(id => {
       const booked = rows.filter(r => r.session === id).reduce((a, r) => a + r.seats, 0);
-      sessions[id] = { label: labels[id], capacity: 10, booked, remaining: Math.max(0, 10 - booked) };
+      sessions[id] = { label: labels[id], capacity: 8, booked, remaining: Math.max(0, 8 - booked) };
     });
     return { ok: true, sessions, rows: rows.map(r => ({ ...r, sessionId: r.session, session: labels[r.session], status: 'Confirmé' })) };
   }
