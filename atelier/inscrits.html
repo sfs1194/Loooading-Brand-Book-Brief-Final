@@ -46,7 +46,7 @@
   </header>
 
   <form class="login" id="login">
-    <input type="password" id="key" placeholder="Clé admin (ADMIN_KEY)" autocomplete="current-password">
+    <input type="password" id="key" placeholder="Clé admin" autocomplete="current-password">
     <button class="btn" type="submit">Afficher</button>
   </form>
   <div class="msg" id="msg"></div>
@@ -69,8 +69,9 @@
 </div>
 
 <script>
-  // ⬇︎ Même URL que dans index.html. Vide = lecture des inscriptions du mode démo (ce navigateur).
-  const API_URL = '';
+  // Fonction Vercel du site (api/atelier.js). Mode démo : fichier local, localhost ou ?demo.
+  const API_URL = '/api/atelier';
+  const DEMO = location.protocol === 'file:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname) || new URLSearchParams(location.search).has('demo');
 
   const $ = id => document.getElementById(id);
   let data = null;
@@ -90,14 +91,14 @@
   async function load() {
     $('msg').textContent = 'Chargement…';
     try {
-      if (!API_URL) data = demoData();
+      if (DEMO) data = demoData();
       else {
-        const r = await fetch(`${API_URL}?action=list&key=${encodeURIComponent($('key').value)}`, { cache: 'no-store' });
+        const r = await fetch(`${API_URL}?action=list&cle=${encodeURIComponent($('key').value)}`, { cache: 'no-store' });
         data = await r.json();
       }
-      if (!data.ok) { $('msg').textContent = 'Clé incorrecte.'; return; }
+      if (!data.ok) { $('msg').textContent = data.error === 'unauthorized' ? 'Clé incorrecte.' : 'Service indisponible (' + data.error + ').'; return; }
       try { sessionStorage.setItem('zk', $('key').value); } catch {}
-      $('msg').textContent = API_URL ? '' : 'Mode démo : inscriptions de ce navigateur uniquement.';
+      $('msg').textContent = !DEMO ? '' : 'Mode démo : inscriptions de ce navigateur uniquement.';
       $('login').hidden = true; $('refresh').hidden = false; $('out').hidden = false;
       draw();
     } catch { $('msg').textContent = 'Impossible de charger les données.'; }
@@ -148,7 +149,7 @@
   $('refresh').addEventListener('click', load);
   $('login').addEventListener('submit', e => { e.preventDefault(); load(); });
   try { const k = sessionStorage.getItem('zk'); if (k) { $('key').value = k; load(); } } catch {}
-  if (!API_URL) load();
+  if (DEMO) load();
 </script>
 </body>
 </html>

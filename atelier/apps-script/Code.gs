@@ -2,6 +2,9 @@
  * The Zellijist × Morocco Design — Atelier zellige chez Flexform
  * Backend de réservation (Google Apps Script lié à un Google Sheet).
  *
+ * Appelé uniquement par la fonction Vercel api/atelier.js de thezellijist.com,
+ * qui ajoute le secret partagé (propriété de script SECRET = ATELIER_SECRET sur Vercel).
+ *
  * L'onglet « Inscriptions » est le récap de tous les inscrits,
  * l'onglet « Récap » affiche places réservées / restantes par session.
  * Installation : voir atelier/README.md.
@@ -13,7 +16,10 @@ const SESSIONS = {
   'mer-07-1500': { label: 'Mercredi 7 octobre · 15:00 · Flexform', capacity: 10 },
 };
 const MAX_SEATS_PER_BOOKING = 2;
-const ADMIN_KEY = 'CHANGER-CETTE-CLE';      // clé pour la page inscrits.html
+// Secret partagé et clé admin : Paramètres du projet → Propriétés du script
+//   SECRET    = même valeur que ATELIER_SECRET sur Vercel
+//   ADMIN_KEY = mot de passe de la page /atelier/inscrits.html
+const PROPS = PropertiesService.getScriptProperties();
 const NOTIFY_EMAIL = '';                     // ex. 'studio@…' : reçoit un mail à chaque inscription ('' = désactivé)
 const SEND_CONFIRMATION = true;              // mail de confirmation au participant
 
@@ -26,8 +32,10 @@ const COL = { session: 2, email: 6, seats: 8, status: 10 };
 // ---------- Endpoints ----------
 function doGet(e) {
   const p = (e && e.parameter) || {};
+  if (!secretOk_(p.secret)) return json_({ ok: false, error: 'secret' });
   if (p.action === 'list') {
-    if (p.key !== ADMIN_KEY) return json_({ ok: false, error: 'unauthorized' });
+    const admin = PROPS.getProperty('ADMIN_KEY');
+    if (!admin || p.key !== admin) return json_({ ok: false, error: 'unauthorized' });
     return json_({ ok: true, sessions: availability_(), rows: rows_() });
   }
   return json_({ ok: true, sessions: availability_() });
@@ -42,6 +50,7 @@ function doPost(e) {
   }
   try {
     const d = JSON.parse((e && e.postData && e.postData.contents) || '{}');
+    if (!secretOk_(d.secret)) return json_({ ok: false, error: 'secret' });
     if (d.website) return json_({ ok: true, sessions: availability_() }); // honeypot anti-spam
 
     const session = SESSIONS[d.session];
@@ -76,6 +85,11 @@ function doPost(e) {
 }
 
 // ---------- Helpers ----------
+function secretOk_(v) {
+  const s = PROPS.getProperty('SECRET');
+  return Boolean(s) && v === s;
+}
+
 function availability_() {
   const counts = {};
   Object.keys(SESSIONS).forEach(id => (counts[id] = 0));
