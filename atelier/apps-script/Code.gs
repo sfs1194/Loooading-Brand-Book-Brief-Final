@@ -1,5 +1,5 @@
 /**
- * The Zellijist × Morocco Design — Atelier zellige chez Flexform
+ * The Zellijist × Morocco Design — Atelier zellije chez Flexform
  * Service de réservation (Google Apps Script lié au classeur « Flexform zellijist waitlist »).
  *
  * Appelé uniquement par la fonction Vercel api/atelier.js de thezellijist.com,
@@ -21,7 +21,7 @@ const SEND_CONFIRMATION = true;              // mail de confirmation au particip
 
 // Secret partagé et clé admin : Paramètres du projet → Propriétés du script
 //   SECRET    = même valeur que ATELIER_SECRET sur Vercel
-//   ADMIN_KEY = mot de passe de la page /atelier/inscrits.html
+//   ADMIN_KEY = mot de passe de la page /flexform/inscrits.html
 const PROPS = PropertiesService.getScriptProperties();
 
 const HEADERS = ['Inscrit le', 'Prénom', 'Nom', 'Email', 'Téléphone', 'Places', 'Société / Studio', 'Statut'];
@@ -145,11 +145,11 @@ function notify_(session, p) {
     if (SEND_CONFIRMATION) {
       MailApp.sendEmail({
         to: p.email,
-        subject: 'Atelier zellige — réservation confirmée',
+        subject: 'Atelier zellije — réservation confirmée',
         name: 'The Zellijist',
         htmlBody:
           '<p>Bonjour ' + p.firstName + ',</p>' +
-          '<p>Votre place est confirmée pour l\'atelier zellige The Zellijist × Morocco Design :</p>' +
+          '<p>Votre place est confirmée pour l\'atelier zellije The Zellijist × Morocco Design :</p>' +
           '<p><b>' + session.label + '</b><br>' + p.seats + ' place(s)</p>' +
           '<p>Showroom Flexform, Casablanca. Merci d\'arriver 10 minutes en avance.</p>' +
           '<p>À très vite,<br>The Zellijist</p>',
