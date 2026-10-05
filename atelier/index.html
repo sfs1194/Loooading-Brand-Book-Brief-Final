@@ -18,12 +18,12 @@
   .wrap { max-width: 1120px; margin: 0 auto; padding: 0 clamp(16px, 5vw, 56px); }
 
   header.top { display: flex; justify-content: space-between; align-items: flex-start; padding-top: clamp(28px, 6vw, 64px); }
-  header .logo-md { width: clamp(160px, 24vw, 260px); }
+  header .logo-md { width: clamp(200px, 30vw, 340px); }
   header .tag { color: var(--md-gold); font-size: clamp(11px, 1.4vw, 15px); letter-spacing: .08em; text-align: right; line-height: 1.3; }
 
   .hero { position: relative; overflow: clip; padding: clamp(72px, 14vw, 160px) 0 clamp(40px, 7vw, 80px); }
   .eyebrow { color: var(--md-gold); font-size: clamp(12px, 1.5vw, 16px); letter-spacing: .14em; margin-bottom: 18px; }
-  h1 { font-size: clamp(36px, 10.5vw, 128px); line-height: .9; margin: 0 0 28px; position: relative; }
+  h1.wide { font-weight: 500; font-size: clamp(36px, 10.5vw, 128px); line-height: .9; margin: 0 0 28px; position: relative; }
   .lead { color: var(--md-gold); font-size: clamp(17px, 2.5vw, 28px); line-height: 1.02; max-width: 820px; margin: 0; position: relative; }
   .hero .by { margin-top: 28px; font-size: clamp(12px, 1.4vw, 15px); letter-spacing: .1em; opacity: .9; position: relative; }
 
@@ -72,10 +72,10 @@
   .demo { background: var(--md-gold); color: var(--md-green-deep); font-size: 13px; text-align: center; padding: 8px 16px; font-weight: 600; }
 
   footer { border-top: 1px solid var(--md-green-line); padding: 34px 0 48px; }
-  footer .partners { justify-content: space-between; gap: 24px 40px; font-size: 15px; }
-  footer .partners .logo-md { width: 150px; }
-  footer .partners .logo-flexform { font-size: 22px; }
-  footer .partners .logo-zellijist { height: 16px; width: auto; }
+  footer .partners { justify-content: space-between; align-items: center; gap: 28px 48px; font-size: 15px; }
+  footer .partners .logo-md { width: clamp(180px, 24vw, 260px); }
+  footer .partners .logo-flexform { font-size: clamp(26px, 3.4vw, 38px); }
+  footer .partners .logo-zellijist { height: clamp(22px, 3vw, 34px); width: auto; }
   footer .legal { margin-top: 28px; font-size: 12px; opacity: .7; letter-spacing: .04em; }
 
   @media (max-width: 760px) {
@@ -157,7 +157,6 @@
     <div class="partners">
       <img class="logo logo-md" src="assets/logos/morocco-design.svg" alt="Morocco Design">
       <img class="logo logo-zellijist" src="assets/logos/the-zellijist-blanc.png" alt="The Zellijist">
-      <span class="logo logo-sfs"><b>Saad Filali</b><span>Studio</span></span>
       <span class="logo logo-flexform">flexform</span>
     </div>
     <div class="legal caps">Morocco Design · First edition · Casablanca · Oct 5 — 7</div>

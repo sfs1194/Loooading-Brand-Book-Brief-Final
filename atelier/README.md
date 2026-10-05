@@ -44,6 +44,6 @@ Tous sur fond transparent, dans `assets/logos/` :
 - Morocco Design : `morocco-design.svg`, converti du PDF vectoriel officiel (or `#E6AC03`, repris comme or de la DA).
 - The Zellijist : `the-zellijist-blanc.png`, logo du site recadré et passé en blanc.
 - Flexform : wordmark blanc dans son cadre rouge (`.logo-flexform`, rouge `--flexform-red` à caler sur le fichier officiel).
-- Saad Filali Studio : wordmark typographique provisoire (`.logo-sfs`) en attendant le fichier.
+- Saad Filali Studio : logo retiré des visuels et de la page (demande du 5 octobre).
 
 Après un changement de logo dans les visuels : `node visuels/render.cjs`.
