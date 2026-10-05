@@ -19,15 +19,14 @@ La page est dans le repo `sfs1194/the-zellijist-site` : `atelier/index.html` (�
 `atelier/inscrits.html` (récap) et `api/atelier.js` (fonction Vercel). Même architecture que le visualiser :
 le navigateur ne parle qu'à `api/atelier.js`, qui relaie vers Apps Script avec un secret.
 
-1. Créer un Google Sheet « Zellijist Atelier Inscriptions » (idéalement depuis le compte atelier@thezellijist.com,
-   expéditeur des emails de confirmation).
+1. Ouvrir le classeur **Flexform zellijist waitlist** (celui de la liste du lundi).
 2. **Extensions → Apps Script**, coller `apps-script/Code.gs`. Ajuster `capacity` des sessions si besoin.
 3. **Paramètres du projet → Propriétés du script** : `SECRET` (longue chaîne aléatoire) et `ADMIN_KEY` (mot de passe du récap).
-4. Exécuter `setup` une fois (autoriser l'accès) → onglets **Inscriptions** et **Récap**.
+4. Exécuter `setup` une fois (autoriser l'accès) → crée les feuilles **Mardi 6 oct · 12h** et **Mercredi 7 oct · 15h**. La feuille du lundi n'est pas touchée.
 5. **Déployer → Nouveau déploiement → Application Web** — Exécuter en tant que : *Moi* ; Accès : *Tout le monde*. Copier l'URL `…/exec`.
 6. Sur Vercel (projet the-zellijist-site → Settings → Environment Variables) :
    `ATELIER_SCRIPT_URL` = l'URL `…/exec`, `ATELIER_SECRET` = la valeur de `SECRET`. Redéployer.
-7. Tester : ouvrir thezellijist.com/atelier, faire une réservation, la voir dans le Sheet et sur /atelier/inscrits.html, puis la passer en « Annulé ».
+7. Tester : ouvrir thezellijist.com/atelier, faire une réservation, la voir dans la feuille du jour et sur /atelier/inscrits.html, puis la passer en « Annulé ».
 
 En local (fichier, localhost) ou avec `?demo` dans l'URL, la page tourne en **mode démo** (inscriptions dans le navigateur seulement).
 
@@ -36,14 +35,14 @@ En local (fichier, localhost) ou avec `?demo` dans l'URL, la page tourne en **mo
 - Verrou côté Apps Script : impossible de dépasser la capacité, même avec des inscriptions simultanées.
 - Doublon email/session refusé ; 1 ou 2 places par inscription ; champ piège anti-robots ; limite de cadence par IP.
 - Email de confirmation au participant.
-- Annuler / pointer un participant : colonne **Statut** du Sheet (Confirmé / Présent / Annulé) → une place annulée est libérée.
+- Annuler / pointer un participant : colonne **Statut** de la feuille du jour (Confirmé / Présent / Annulé) → une place annulée est libérée.
 - Code Apps Script modifié : **Déployer → Gérer les déploiements → Modifier → Nouvelle version** (l'URL ne change pas).
 
 ## Logos
 Tous sur fond transparent, dans `assets/logos/` :
 - Morocco Design : `morocco-design.svg`, converti du PDF vectoriel officiel (or `#E6AC03`, repris comme or de la DA).
 - The Zellijist : `the-zellijist-blanc.png`, logo du site recadré et passé en blanc.
-- Flexform : wordmark blanc dans son cadre rouge (`.logo-flexform`, rouge `--flexform-red` à caler sur le fichier officiel).
+- Flexform : `flexform.png`, logo original fourni (cadre rouge compris), simplement recadré ; profil couleur Display P3 d'origine conservé.
 - Saad Filali Studio : logo retiré des visuels et de la page (demande du 5 octobre).
 
 Après un changement de logo dans les visuels : `node visuels/render.cjs`.

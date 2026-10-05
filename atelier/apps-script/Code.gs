@@ -1,33 +1,31 @@
 /**
  * The Zellijist × Morocco Design — Atelier zellige chez Flexform
- * Backend de réservation (Google Apps Script lié à un Google Sheet).
+ * Service de réservation (Google Apps Script lié au classeur « Flexform zellijist waitlist »).
  *
  * Appelé uniquement par la fonction Vercel api/atelier.js de thezellijist.com,
  * qui ajoute le secret partagé (propriété de script SECRET = ATELIER_SECRET sur Vercel).
  *
- * L'onglet « Inscriptions » est le récap de tous les inscrits,
- * l'onglet « Récap » affiche places réservées / restantes par session.
+ * Une feuille par session (« Mardi 6 oct · 12h », « Mercredi 7 oct · 15h ») : chaque feuille
+ * est la liste des inscrits de son créneau. La feuille du lundi n'est jamais modifiée.
  * Installation : voir atelier/README.md.
  */
 
 // ---------- Configuration ----------
 const SESSIONS = {
-  'mar-06-1200': { label: 'Mardi 6 octobre · 12:00 · Flexform', capacity: 10 },
-  'mer-07-1500': { label: 'Mercredi 7 octobre · 15:00 · Flexform', capacity: 10 },
+  'mar-06-1200': { sheet: 'Mardi 6 oct · 12h', label: 'Mardi 6 octobre · 12:00 · Flexform', capacity: 10 },
+  'mer-07-1500': { sheet: 'Mercredi 7 oct · 15h', label: 'Mercredi 7 octobre · 15:00 · Flexform', capacity: 10 },
 };
 const MAX_SEATS_PER_BOOKING = 2;
+const NOTIFY_EMAIL = '';                     // ex. 'studio@…' : reçoit un mail à chaque inscription ('' = désactivé)
+const SEND_CONFIRMATION = true;              // mail de confirmation au participant
+
 // Secret partagé et clé admin : Paramètres du projet → Propriétés du script
 //   SECRET    = même valeur que ATELIER_SECRET sur Vercel
 //   ADMIN_KEY = mot de passe de la page /atelier/inscrits.html
 const PROPS = PropertiesService.getScriptProperties();
-const NOTIFY_EMAIL = '';                     // ex. 'studio@…' : reçoit un mail à chaque inscription ('' = désactivé)
-const SEND_CONFIRMATION = true;              // mail de confirmation au participant
 
-const SHEET_NAME = 'Inscriptions';
-const RECAP_NAME = 'Récap';
-const HEADERS = ['Date d\'inscription', 'Session ID', 'Session', 'Prénom', 'Nom', 'Email', 'Téléphone', 'Places', 'Société / Studio', 'Statut'];
-// Colonnes (1-indexées)
-const COL = { session: 2, email: 6, seats: 8, status: 10 };
+const HEADERS = ['Inscrit le', 'Prénom', 'Nom', 'Email', 'Téléphone', 'Places', 'Société / Studio', 'Statut'];
+const COL = { email: 4, seats: 6, status: 8 }; // 1-indexées
 
 // ---------- Endpoints ----------
 function doGet(e) {
@@ -36,7 +34,7 @@ function doGet(e) {
   if (p.action === 'list') {
     const admin = PROPS.getProperty('ADMIN_KEY');
     if (!admin || p.key !== admin) return json_({ ok: false, error: 'unauthorized' });
-    return json_({ ok: true, sessions: availability_(), rows: rows_() });
+    return json_({ ok: true, sessions: availability_(), rows: allRows_() });
   }
   return json_({ ok: true, sessions: availability_() });
 }
@@ -51,7 +49,6 @@ function doPost(e) {
   try {
     const d = JSON.parse((e && e.postData && e.postData.contents) || '{}');
     if (!secretOk_(d.secret)) return json_({ ok: false, error: 'secret' });
-    if (d.website) return json_({ ok: true, sessions: availability_() }); // honeypot anti-spam
 
     const session = SESSIONS[d.session];
     const firstName = clean_(d.firstName, 80);
@@ -66,15 +63,14 @@ function doPost(e) {
       return json_({ ok: false, error: 'invalid_fields' });
     }
 
-    const sh = sheet_();
-    const data = sh.getLastRow() > 1 ? sh.getRange(2, 1, sh.getLastRow() - 1, HEADERS.length).getValues() : [];
-    const dup = data.some(r => r[COL.session - 1] === d.session && String(r[COL.email - 1]).toLowerCase() === email && r[COL.status - 1] !== 'Annulé');
-    if (dup) return json_({ ok: false, error: 'already_registered', sessions: availability_() });
-
+    const rows = rows_(d.session);
+    if (rows.some(r => r.email.toLowerCase() === email && r.status !== 'Annulé')) {
+      return json_({ ok: false, error: 'already_registered', sessions: availability_() });
+    }
     const remaining = availability_()[d.session].remaining;
     if (seats > remaining) return json_({ ok: false, error: remaining > 0 ? 'not_enough_seats' : 'full', sessions: availability_() });
 
-    sh.appendRow([new Date(), d.session, session.label, firstName, lastName, email, "'" + phone, seats, company, 'Confirmé']);
+    sheet_(d.session).appendRow([new Date(), firstName, lastName, email, "'" + phone, seats, company, 'Confirmé']);
     SpreadsheetApp.flush();
 
     notify_(session, { firstName, lastName, email, phone, seats, company });
@@ -91,39 +87,47 @@ function secretOk_(v) {
 }
 
 function availability_() {
-  const counts = {};
-  Object.keys(SESSIONS).forEach(id => (counts[id] = 0));
-  rows_().forEach(r => {
-    if (r.status !== 'Annulé' && counts[r.sessionId] !== undefined) counts[r.sessionId] += Number(r.seats) || 0;
-  });
   const out = {};
   Object.keys(SESSIONS).forEach(id => {
+    const booked = rows_(id).filter(r => r.status !== 'Annulé').reduce((a, r) => a + (Number(r.seats) || 0), 0);
     const cap = SESSIONS[id].capacity;
-    out[id] = { label: SESSIONS[id].label, capacity: cap, booked: counts[id], remaining: Math.max(0, cap - counts[id]) };
+    out[id] = { label: SESSIONS[id].label, capacity: cap, booked: booked, remaining: Math.max(0, cap - booked) };
   });
   return out;
 }
 
-function rows_() {
-  const sh = sheet_();
+function rows_(id) {
+  const sh = sheet_(id);
   if (sh.getLastRow() < 2) return [];
-  return sh.getRange(2, 1, sh.getLastRow() - 1, HEADERS.length).getValues().map(r => ({
-    date: r[0] instanceof Date ? r[0].toISOString() : String(r[0]),
-    sessionId: r[1], session: r[2], firstName: r[3], lastName: r[4],
-    email: r[5], phone: String(r[6]), seats: r[7], company: r[8], status: r[9],
-  }));
+  return sh.getRange(2, 1, sh.getLastRow() - 1, HEADERS.length).getValues()
+    .filter(r => r[1] || r[3])
+    .map(r => ({
+      date: r[0] instanceof Date ? r[0].toISOString() : String(r[0]),
+      sessionId: id, session: SESSIONS[id].label,
+      firstName: r[1], lastName: r[2], email: String(r[3]), phone: String(r[4]),
+      seats: r[5], company: r[6], status: r[7],
+    }));
 }
 
-function sheet_() {
+function allRows_() {
+  return Object.keys(SESSIONS).reduce((all, id) => all.concat(rows_(id)), []);
+}
+
+/** Feuille de la session ; créée avec ses en-têtes si elle n'existe pas encore. */
+function sheet_(id) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sh = ss.getSheetByName(SHEET_NAME);
+  const name = SESSIONS[id].sheet;
+  let sh = ss.getSheetByName(name);
   if (!sh) {
-    sh = ss.insertSheet(SHEET_NAME, 0);
+    sh = ss.insertSheet(name);
     sh.appendRow(HEADERS);
     sh.setFrozenRows(1);
-    sh.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold').setBackground('#2D5E37').setFontColor('#D6B53F');
+    sh.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold').setBackground('#2D5E37').setFontColor('#E6AC03');
     sh.getRange(2, COL.status, 999, 1).setDataValidation(
       SpreadsheetApp.newDataValidation().requireValueInList(['Confirmé', 'Présent', 'Annulé'], true).build());
+    sh.setColumnWidth(1, 140);
+    sh.setColumnWidths(2, 3, 150);
+    sh.setColumnWidth(4, 220);
   }
   return sh;
 }
@@ -148,7 +152,7 @@ function notify_(session, p) {
           '<p>Votre place est confirmée pour l\'atelier zellige The Zellijist × Morocco Design :</p>' +
           '<p><b>' + session.label + '</b><br>' + p.seats + ' place(s)</p>' +
           '<p>Showroom Flexform, Casablanca. Merci d\'arriver 10 minutes en avance.</p>' +
-          '<p>À très vite,<br>The Zellijist · Saad Filali Studio</p>',
+          '<p>À très vite,<br>The Zellijist</p>',
       });
     }
     if (NOTIFY_EMAIL) {
@@ -160,30 +164,7 @@ function notify_(session, p) {
   }
 }
 
-/** À lancer une fois depuis l'éditeur : crée les onglets et le récap. */
+/** À lancer une fois depuis l'éditeur : crée les feuilles Mardi et Mercredi. */
 function setup() {
-  sheet_();
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let recap = ss.getSheetByName(RECAP_NAME);
-  if (!recap) recap = ss.insertSheet(RECAP_NAME, 1);
-  recap.clear();
-  recap.appendRow(['Session', 'Capacité', 'Réservées', 'Restantes', 'Inscriptions']);
-  const ids = Object.keys(SESSIONS);
-  ids.forEach((id, i) => {
-    const r = i + 2;
-    const src = "'" + SHEET_NAME + "'!";
-    recap.getRange(r, 1, 1, 5).setValues([[
-      SESSIONS[id].label,
-      SESSIONS[id].capacity,
-      '=SUMIFS(' + src + 'H:H,' + src + 'B:B,"' + id + '",' + src + 'J:J,"<>Annulé")',
-      '=B' + r + '-C' + r,
-      '=COUNTIFS(' + src + 'B:B,"' + id + '",' + src + 'J:J,"<>Annulé")',
-    ]]);
-  });
-  const total = ids.length + 2;
-  recap.getRange(total, 1, 1, 5).setValues([['TOTAL', '=SUM(B2:B' + (total - 1) + ')', '=SUM(C2:C' + (total - 1) + ')', '=SUM(D2:D' + (total - 1) + ')', '=SUM(E2:E' + (total - 1) + ')']]);
-  recap.getRange(1, 1, 1, 5).setFontWeight('bold').setBackground('#2D5E37').setFontColor('#D6B53F');
-  recap.getRange(total, 1, 1, 5).setFontWeight('bold');
-  recap.setFrozenRows(1);
-  recap.autoResizeColumns(1, 5);
+  Object.keys(SESSIONS).forEach(sheet_);
 }

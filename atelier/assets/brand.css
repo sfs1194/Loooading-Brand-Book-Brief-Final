@@ -16,7 +16,6 @@
   --md-gold-soft: #F2C23A;
   --md-white: #FFFFFF;
   --md-ink: #10261A;
-  --flexform-red: #E2001A;
   --font-wide: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
 }
 
@@ -24,7 +23,7 @@
 .caps { font-family: var(--font-wide); font-stretch: 100%; font-weight: 600; text-transform: uppercase; }
 
 /* ---------- Logos ----------
-   Fichiers dans assets/logos/ (fonds transparents). Flexform garde son cadre rouge.
+   Fichiers dans assets/logos/ (fonds transparents). Flexform : logo original, cadre rouge compris.
    Saad Filali Studio : wordmark typographique en attendant le fichier officiel. */
 .logo { display: inline-flex; align-items: center; color: currentColor; line-height: 1; white-space: nowrap; }
 img.logo { display: block; height: auto; }
@@ -33,7 +32,7 @@ img.logo { display: block; height: auto; }
 .logo-sfs b { font-weight: 800; letter-spacing: .1em; font-size: 1.15em; }
 .logo-sfs span { font-size: .62em; letter-spacing: .5em; }
 
-.logo-flexform { background: var(--flexform-red); color: #fff; font-family: var(--font-wide); font-stretch: 100%; font-weight: 700; letter-spacing: -0.03em; text-transform: lowercase; font-size: 1.35em; padding: .28em .5em .36em; }
+.logo-flexform { display: block; }
 
 .partners { display: flex; align-items: center; flex-wrap: wrap; }
 .partners .x { font-family: var(--font-wide); font-weight: 400; opacity: .6; }
