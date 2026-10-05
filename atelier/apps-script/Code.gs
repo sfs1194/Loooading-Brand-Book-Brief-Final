@@ -1,6 +1,6 @@
 /**
  * The Zellijist × Morocco Design — Atelier zellije chez Flexform
- * Service de réservation (Google Apps Script lié au classeur « Flexform zellijist waitlist »).
+ * Service de réservation ; les inscrits vont dans le classeur « Flexform zellijist waitlist ».
  *
  * Appelé uniquement par la fonction Vercel api/atelier.js de thezellijist.com,
  * qui ajoute le secret partagé (propriété de script SECRET = ATELIER_SECRET sur Vercel).
@@ -23,6 +23,9 @@ const SEND_CONFIRMATION = true;              // mail de confirmation au particip
 //   SECRET    = même valeur que ATELIER_SECRET sur Vercel
 //   ADMIN_KEY = mot de passe de la page /flexform/inscrits.html
 const PROPS = PropertiesService.getScriptProperties();
+
+// Classeur « Flexform zellijist waitlist » : le script n'a pas besoin d'y être lié.
+const SPREADSHEET_ID = '10A0u_yuBySkuBUPJhRee2-EZpy7Xf3KVKwuKFdfNJKY';
 
 const HEADERS = ['Inscrit le', 'Prénom', 'Nom', 'Email', 'Téléphone', 'Places', 'Société / Studio', 'Statut'];
 const COL = { email: 4, seats: 6, status: 8 }; // 1-indexées
@@ -115,7 +118,7 @@ function allRows_() {
 
 /** Feuille de la session ; créée avec ses en-têtes si elle n'existe pas encore. */
 function sheet_(id) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const name = SESSIONS[id].sheet;
   let sh = ss.getSheetByName(name);
   if (!sh) {
