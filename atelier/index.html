@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atelier Zellige — The Zellijist × Morocco Design</title>
+<meta name="description" content="Atelier zellige The Zellijist chez Flexform, Casablanca — mardi 6 octobre à 12:00 et mercredi 7 octobre à 15:00. Morocco Design, première édition. Places limitées.">
+<meta property="og:title" content="Zellige Workshop — The Zellijist × Morocco Design">
+<meta property="og:description" content="Deux sessions exceptionnelles chez Flexform, Casablanca. Places limitées — réservez.">
+<meta property="og:image" content="visuels/zellijist-atelier-post-1080x1350.png">
+<link rel="stylesheet" href="assets/brand.css">
+<style>
+  /* URL du Web App Google Apps Script : voir README.md */
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--md-green); color: var(--md-white); font-family: var(--font-wide); font-stretch: 100%; }
+  a { color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 clamp(16px, 5vw, 56px); }
+
+  header.top { display: flex; justify-content: space-between; align-items: flex-start; padding-top: clamp(28px, 6vw, 64px); }
+  header .logo-md { font-size: clamp(22px, 3.4vw, 34px); }
+  header .tag { color: var(--md-gold); font-size: clamp(11px, 1.4vw, 15px); letter-spacing: .08em; text-align: right; line-height: 1.3; }
+
+  .hero { position: relative; overflow: clip; padding: clamp(72px, 14vw, 160px) 0 clamp(40px, 7vw, 80px); }
+  .hero .motif { position: absolute; right: -8%; top: 12%; width: min(46vw, 520px); color: var(--md-green-line); opacity: .55; pointer-events: none; }
+  .eyebrow { color: var(--md-gold); font-size: clamp(12px, 1.5vw, 16px); letter-spacing: .14em; margin-bottom: 18px; }
+  h1 { font-size: clamp(36px, 10.5vw, 128px); line-height: .9; margin: 0 0 28px; position: relative; }
+  .lead { color: var(--md-gold); font-size: clamp(17px, 2.5vw, 28px); line-height: 1.02; max-width: 820px; margin: 0; position: relative; }
+  .hero .by { margin-top: 28px; font-size: clamp(12px, 1.4vw, 15px); letter-spacing: .1em; opacity: .9; position: relative; }
+
+  .sessions { display: grid; grid-template-columns: 1fr 1fr; border-top: 3px solid var(--md-gold); border-bottom: 3px solid var(--md-gold); }
+  .s { padding: 28px 0 30px; display: flex; flex-direction: column; gap: 10px; }
+  .s + .s { border-left: 3px solid var(--md-gold); padding-left: clamp(20px, 4vw, 40px); }
+  .s .d { color: var(--md-gold); font-size: clamp(13px, 1.6vw, 17px); letter-spacing: .06em; }
+  .s .h { font-size: clamp(48px, 7vw, 84px); line-height: 1; }
+  .s .p { font-size: clamp(11px, 1.3vw, 14px); letter-spacing: .1em; opacity: .85; }
+  .seats { margin-top: 10px; max-width: 360px; }
+  .seats .bar { height: 6px; background: var(--md-green-deep); position: relative; overflow: hidden; }
+  .seats .bar i { position: absolute; inset: 0 auto 0 0; background: var(--md-gold); width: 0; transition: width .5s ease; }
+  .seats .n { margin-top: 8px; font-size: 13px; letter-spacing: .08em; }
+  .s .pick { margin-top: 12px; align-self: flex-start; }
+
+  .btn { appearance: none; border: 0; cursor: pointer; background: var(--md-gold); color: var(--md-green-deep); font-family: var(--font-wide); font-stretch: 125%; font-weight: 800; text-transform: uppercase; font-size: 15px; letter-spacing: .04em; padding: 15px 22px 13px; text-decoration: none; display: inline-block; }
+  .btn:hover { background: var(--md-gold-soft); }
+  .btn:focus-visible, input:focus-visible, label.opt:focus-within { outline: 3px solid var(--md-white); outline-offset: 2px; }
+  .btn[disabled] { background: var(--md-green-line); color: var(--md-green-deep); cursor: not-allowed; }
+
+  section.book { padding: clamp(56px, 9vw, 110px) 0; display: grid; grid-template-columns: 1fr 1.25fr; gap: clamp(28px, 6vw, 80px); }
+  h2 { font-size: clamp(30px, 4.6vw, 56px); line-height: .92; margin: 0 0 22px; }
+  .book .intro p { font-size: 16px; line-height: 1.55; margin: 0 0 14px; opacity: .92; max-width: 420px; }
+  .book .intro .gold { color: var(--md-gold); }
+
+  form { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 18px; }
+  .full { grid-column: 1 / -1; }
+  fieldset { border: 0; padding: 0; margin: 0; }
+  legend, label.f > span { display: block; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--md-gold); margin-bottom: 8px; font-weight: 600; }
+  input[type=text], input[type=email], input[type=tel], select { width: 100%; font: inherit; font-size: 16px; color: var(--md-white); background: transparent; border: 0; border-bottom: 2px solid var(--md-green-line); padding: 10px 0; border-radius: 0; }
+  input:focus, select:focus { outline: none; border-bottom-color: var(--md-gold); }
+  select option { color: #111; }
+  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  label.opt { display: block; border: 2px solid var(--md-green-line); padding: 14px 16px; cursor: pointer; }
+  label.opt input { position: absolute; opacity: 0; pointer-events: none; }
+  label.opt b { display: block; font-stretch: 125%; font-weight: 800; font-size: 22px; }
+  label.opt small { display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; opacity: .85; margin-top: 4px; }
+  label.opt:has(input:checked) { border-color: var(--md-gold); background: var(--md-green-deep); }
+  label.opt:has(input:disabled) { opacity: .45; cursor: not-allowed; }
+  .hp { position: absolute; left: -9999px; }
+  .msg { min-height: 1.4em; font-size: 14px; }
+  .msg.err { color: #FFD7C2; }
+  .done { border: 3px solid var(--md-gold); padding: 32px; }
+  .done h3 { margin: 0 0 12px; font-size: 32px; }
+  .done p { margin: 0; line-height: 1.5; }
+  .demo { background: var(--md-gold); color: var(--md-green-deep); font-size: 13px; text-align: center; padding: 8px 16px; font-weight: 600; }
+
+  footer { border-top: 1px solid var(--md-green-line); padding: 34px 0 48px; }
+  footer .partners { justify-content: space-between; gap: 24px 40px; font-size: 15px; }
+  footer .partners .logo-md { font-size: 20px; }
+  footer .partners .logo-flexform { font-size: 26px; }
+  footer .partners .star { width: 1.3em; height: 1.3em; }
+  footer .legal { margin-top: 28px; font-size: 12px; opacity: .7; letter-spacing: .04em; }
+
+  @media (max-width: 760px) {
+    .sessions { grid-template-columns: 1fr; }
+    .s + .s { border-left: 0; border-top: 3px solid var(--md-gold); padding-left: 0; }
+    section.book { grid-template-columns: 1fr; }
+    form { grid-template-columns: 1fr; }
+    .opts { grid-template-columns: 1fr; }
+    footer .partners { justify-content: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="demo" id="demo" hidden>Mode démo : les inscriptions sont enregistrées seulement dans ce navigateur. Renseigner API_URL (voir README) avant publication.</div>
+
+<div class="wrap">
+  <header class="top">
+    <a href="https://www.moroccodesign.com/experiences" class="logo logo-md" aria-label="Morocco Design" style="text-decoration:none"><span class="lat"><span>Morocco</span><span>Design</span></span><span class="ar" lang="ar">المغرب</span></a>
+    <div class="tag caps">Casablanca<br>Oct 5 — 7</div>
+  </header>
+
+  <section class="hero">
+    <svg class="motif" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><rect x="21" y="21" width="58" height="58"/><rect x="21" y="21" width="58" height="58" transform="rotate(45 50 50)"/><circle cx="50" cy="50" r="9" fill="currentColor" stroke="none"/></svg>
+    <div class="eyebrow caps">Back by popular demand · De retour</div>
+    <h1 class="wide">Zellige<br>Workshop</h1>
+    <p class="lead caps">Deux sessions exceptionnelles avec The Zellijist chez Flexform. Places limitées — réservez.</p>
+    <div class="by caps">The Zellijist × Saad Filali Studio × Flexform</div>
+  </section>
+
+  <div class="sessions" id="sessions">
+    <div class="s" data-id="mar-06-1200">
+      <div class="d caps">Mardi · 6 octobre</div>
+      <div class="h wide">12:00</div>
+      <div class="p caps">Showroom Flexform · Casablanca</div>
+      <div class="seats"><div class="bar"><i></i></div><div class="n caps">…</div></div>
+      <a class="btn pick" href="#reserver">Réserver</a>
+    </div>
+    <div class="s" data-id="mer-07-1500">
+      <div class="d caps">Mercredi · 7 octobre</div>
+      <div class="h wide">15:00</div>
+      <div class="p caps">Showroom Flexform · Casablanca</div>
+      <div class="seats"><div class="bar"><i></i></div><div class="n caps">…</div></div>
+      <a class="btn pick" href="#reserver">Réserver</a>
+    </div>
+  </div>
+
+  <section class="book" id="reserver">
+    <div class="intro">
+      <h2 class="wide">Réservez<br>votre place</h2>
+      <p>Après le succès de l'atelier de lundi, The Zellijist ouvre exceptionnellement deux nouvelles sessions dans le cadre de la première édition de Morocco Design.</p>
+      <p>Mettez les mains dans la matière : découvrez le zellige, ses formes, ses couleurs et son savoir-faire, dans le showroom Flexform.</p>
+      <p class="gold caps" style="font-size:14px;letter-spacing:.08em">Places limitées · Inscription gratuite · Confirmation par email</p>
+    </div>
+
+    <div id="formBox">
+      <form id="form" novalidate>
+        <fieldset class="full">
+          <legend>Session</legend>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="session" value="mar-06-1200" required><b>Mar. 6 · 12:00</b><small data-left="mar-06-1200">Flexform</small></label>
+            <label class="opt"><input type="radio" name="session" value="mer-07-1500"><b>Mer. 7 · 15:00</b><small data-left="mer-07-1500">Flexform</small></label>
+          </div>
+        </fieldset>
+        <label class="f"><span>Prénom</span><input type="text" name="firstName" autocomplete="given-name" required maxlength="80"></label>
+        <label class="f"><span>Nom</span><input type="text" name="lastName" autocomplete="family-name" required maxlength="80"></label>
+        <label class="f"><span>Email</span><input type="email" name="email" autocomplete="email" required maxlength="120"></label>
+        <label class="f"><span>Téléphone</span><input type="tel" name="phone" autocomplete="tel" required maxlength="40" placeholder="+212 …"></label>
+        <label class="f"><span>Société / studio <em style="font-style:normal;opacity:.7">(optionnel)</em></span><input type="text" name="company" autocomplete="organization" maxlength="120"></label>
+        <label class="f"><span>Nombre de places</span><select name="seats"><option value="1">1 place</option><option value="2">2 places</option></select></label>
+        <label class="hp" aria-hidden="true">Site web<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+        <div class="full"><button class="btn" type="submit" id="submit">Confirmer ma réservation</button></div>
+        <div class="full msg" id="msg" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="partners">
+      <span class="logo logo-md"><span class="lat"><span>Morocco</span><span>Design</span></span><span class="ar" lang="ar">المغرب</span></span>
+      <span class="logo logo-zellijist"><svg class="star" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="7" aria-hidden="true"><rect x="21" y="21" width="58" height="58"/><rect x="21" y="21" width="58" height="58" transform="rotate(45 50 50)"/><circle cx="50" cy="50" r="9" fill="currentColor" stroke="none"/></svg><span>The <b>Zellijist</b></span></span>
+      <span class="logo logo-sfs"><b>Saad Filali</b><span>Studio</span></span>
+      <span class="logo logo-flexform">flexform</span>
+    </div>
+    <div class="legal caps">Morocco Design · First edition · Casablanca · Oct 5 — 7</div>
+  </div>
+</footer>
+
+<script>
+  // ⬇︎ Coller ici l'URL du Web App Apps Script (…/exec). Vide = mode démo local.
+  const API_URL = '';
+
+  const DEMO_CAPACITY = 10;
+  const IDS = ['mar-06-1200', 'mer-07-1500'];
+  const ERRORS = {
+    full: 'Cette session est complète. Essayez l\'autre créneau.',
+    not_enough_seats: 'Il ne reste pas assez de places pour ce créneau.',
+    already_registered: 'Vous êtes déjà inscrit·e à cette session avec cet email.',
+    invalid_fields: 'Merci de remplir tous les champs obligatoires.',
+    invalid_session: 'Merci de choisir une session.',
+    busy: 'Beaucoup de demandes en même temps, merci de réessayer.',
+    network: 'Connexion impossible. Merci de réessayer dans un instant.',
+  };
+
+  const form = document.getElementById('form');
+  const msg = document.getElementById('msg');
+  const submit = document.getElementById('submit');
+
+  // ----- Mode démo (localStorage) -----
+  const demo = {
+    load() { try { return JSON.parse(localStorage.getItem('zellijist-demo') || '[]'); } catch { return []; } },
+    save(rows) { try { localStorage.setItem('zellijist-demo', JSON.stringify(rows)); } catch {} },
+    sessions(rows) {
+      const out = {};
+      IDS.forEach(id => {
+        const booked = rows.filter(r => r.session === id).reduce((a, r) => a + r.seats, 0);
+        out[id] = { capacity: DEMO_CAPACITY, booked, remaining: Math.max(0, DEMO_CAPACITY - booked) };
+      });
+      return out;
+    },
+  };
+
+  async function fetchSessions() {
+    if (!API_URL) return demo.sessions(demo.load());
+    const r = await fetch(API_URL, { cache: 'no-store' });
+    const j = await r.json();
+    return j.sessions;
+  }
+
+  async function postBooking(data) {
+    if (!API_URL) {
+      const rows = demo.load();
+      const s = demo.sessions(rows)[data.session];
+      if (!s) return { ok: false, error: 'invalid_session' };
+      if (rows.some(r => r.session === data.session && r.email === data.email.toLowerCase())) return { ok: false, error: 'already_registered' };
+      if (data.seats > s.remaining) return { ok: false, error: s.remaining ? 'not_enough_seats' : 'full' };
+      rows.push({ ...data, email: data.email.toLowerCase(), date: new Date().toISOString() });
+      demo.save(rows);
+      return { ok: true, sessions: demo.sessions(rows) };
+    }
+    // text/plain évite la requête preflight CORS vers Apps Script
+    const r = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(data) });
+    return r.json();
+  }
+
+  function render(sessions) {
+    if (!sessions) return;
+    IDS.forEach(id => {
+      const s = sessions[id]; if (!s) return;
+      const card = document.querySelector(`.s[data-id="${id}"]`);
+      const pct = s.capacity ? (s.booked / s.capacity) * 100 : 100;
+      card.querySelector('.bar i').style.width = pct + '%';
+      card.querySelector('.n').textContent = s.remaining > 0
+        ? `${s.remaining} place${s.remaining > 1 ? 's' : ''} restante${s.remaining > 1 ? 's' : ''} / ${s.capacity}`
+        : 'Complet';
+      const pick = card.querySelector('.pick');
+      pick.textContent = s.remaining > 0 ? 'Réserver' : 'Complet';
+      pick.toggleAttribute('aria-disabled', s.remaining <= 0);
+      pick.style.pointerEvents = s.remaining > 0 ? '' : 'none';
+      pick.style.opacity = s.remaining > 0 ? '' : '.5';
+      const radio = form.querySelector(`input[value="${id}"]`);
+      radio.disabled = s.remaining <= 0;
+      if (radio.disabled) radio.checked = false;
+      form.querySelector(`[data-left="${id}"]`).textContent = s.remaining > 0 ? `Flexform · ${s.remaining} place${s.remaining > 1 ? 's' : ''}` : 'Complet';
+    });
+    const seatsSel = form.seats;
+    const chosen = form.querySelector('input[name=session]:checked');
+    const left = chosen ? sessions[chosen.value].remaining : 2;
+    seatsSel.options[1].disabled = left < 2;
+    if (left < 2) seatsSel.value = '1';
+    if (IDS.every(id => sessions[id] && sessions[id].remaining <= 0)) {
+      submit.disabled = true; submit.textContent = 'Toutes les sessions sont complètes';
+    }
+  }
+
+  let current = null;
+  async function refresh() {
+    try { current = await fetchSessions(); render(current); }
+    catch { document.querySelectorAll('.seats .n').forEach(n => (n.textContent = 'Places limitées')); }
+  }
+
+  document.querySelectorAll('.s .pick').forEach(a => a.addEventListener('click', () => {
+    const id = a.closest('.s').dataset.id;
+    const radio = form.querySelector(`input[value="${id}"]`);
+    if (!radio.disabled) { radio.checked = true; render(current); }
+  }));
+  form.addEventListener('change', e => { if (e.target.name === 'session') render(current); });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    msg.className = 'full msg'; msg.textContent = '';
+    const fd = new FormData(form);
+    const data = Object.fromEntries(fd.entries());
+    data.seats = parseInt(data.seats, 10) || 1;
+    if (!data.session) { msg.className += ' err'; msg.textContent = ERRORS.invalid_session; return; }
+    if (!form.checkValidity()) { msg.className += ' err'; msg.textContent = ERRORS.invalid_fields; form.reportValidity(); return; }
+
+    submit.disabled = true; submit.textContent = 'Envoi…';
+    let res;
+    try { res = await postBooking(data); } catch { res = { ok: false, error: 'network' }; }
+    submit.disabled = false; submit.textContent = 'Confirmer ma réservation';
+
+    if (res.sessions) { current = res.sessions; render(current); }
+    if (!res.ok) { msg.className += ' err'; msg.textContent = ERRORS[res.error] || ERRORS.network; return; }
+
+    const label = data.session === 'mar-06-1200' ? 'mardi 6 octobre à 12:00' : 'mercredi 7 octobre à 15:00';
+    const box = document.getElementById('formBox');
+    box.innerHTML = '';
+    const done = document.createElement('div'); done.className = 'done';
+    const h = document.createElement('h3'); h.className = 'wide'; h.textContent = 'C\'est réservé';
+    const p = document.createElement('p');
+    p.textContent = `Merci ${data.firstName} ! ${data.seats > 1 ? 'Vos ' + data.seats + ' places sont confirmées' : 'Votre place est confirmée'} pour l'atelier du ${label}, au showroom Flexform à Casablanca.${API_URL ? ' Un email de confirmation vous a été envoyé.' : ''}`;
+    done.append(h, p); box.append(done);
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  if (!API_URL) document.getElementById('demo').hidden = false;
+  refresh();
+  setInterval(refresh, 30000);
+</script>
+</body>
+</html>

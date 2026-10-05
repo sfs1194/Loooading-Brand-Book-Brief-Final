@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Inscrits — Atelier Zellige</title>
+<link rel="stylesheet" href="assets/brand.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--md-green); color: var(--md-white); font-family: var(--font-wide); }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 32px clamp(16px, 4vw, 40px) 64px; }
+  header { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; border-bottom: 3px solid var(--md-gold); padding-bottom: 20px; }
+  h1 { font-size: clamp(28px, 5vw, 48px); line-height: .92; margin: 0; }
+  .gold { color: var(--md-gold); }
+  .btn { appearance: none; border: 0; cursor: pointer; background: var(--md-gold); color: var(--md-green-deep); font-family: var(--font-wide); font-stretch: 125%; font-weight: 800; text-transform: uppercase; font-size: 13px; padding: 12px 18px 10px; }
+  .btn.ghost { background: transparent; color: var(--md-gold); border: 2px solid var(--md-gold); }
+  .login { margin-top: 40px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .login input { font: inherit; font-size: 16px; color: var(--md-white); background: transparent; border: 0; border-bottom: 2px solid var(--md-green-line); padding: 10px 0; min-width: 260px; }
+  .login input:focus { outline: none; border-bottom-color: var(--md-gold); }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 28px 0; }
+  .stat { border: 2px solid var(--md-green-line); padding: 18px; }
+  .stat .k { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--md-gold); }
+  .stat .v { font-stretch: 125%; font-weight: 800; font-size: 40px; margin-top: 8px; }
+  .stat .v small { font-size: 16px; opacity: .7; }
+  .tools { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+  .tools select { font: inherit; background: var(--md-green-deep); color: var(--md-white); border: 1px solid var(--md-green-line); padding: 8px; }
+  .scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--md-gold); border-bottom: 2px solid var(--md-gold); padding: 10px 8px; white-space: nowrap; }
+  td { border-bottom: 1px solid var(--md-green-line); padding: 10px 8px; white-space: nowrap; }
+  tr.cancel td { opacity: .45; text-decoration: line-through; }
+  .msg { margin-top: 16px; min-height: 1.2em; }
+  .note { font-size: 13px; opacity: .8; margin-top: 18px; line-height: 1.5; }
+  @media print { body { background: #fff; color: #000; } .login, .tools button, header .btn { display: none; } th { color: #000; border-color: #000; } td { border-color: #ccc; } .stat { border-color: #ccc; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="caps gold" style="font-size:13px;letter-spacing:.12em;margin-bottom:10px">The Zellijist × Morocco Design · Flexform</div>
+      <h1 class="wide">Récap<br>des inscrits</h1>
+    </div>
+    <button class="btn ghost" id="refresh" hidden>Actualiser</button>
+  </header>
+
+  <form class="login" id="login">
+    <input type="password" id="key" placeholder="Clé admin (ADMIN_KEY)" autocomplete="current-password">
+    <button class="btn" type="submit">Afficher</button>
+  </form>
+  <div class="msg" id="msg"></div>
+
+  <div id="out" hidden>
+    <div class="stats" id="stats"></div>
+    <div class="tools">
+      <select id="filter"><option value="">Toutes les sessions</option></select>
+      <button class="btn" id="csv">Exporter CSV</button>
+      <button class="btn ghost" onclick="print()">Imprimer la liste</button>
+    </div>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>#</th><th>Session</th><th>Prénom</th><th>Nom</th><th>Email</th><th>Téléphone</th><th>Places</th><th>Société</th><th>Statut</th><th>Inscrit le</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <p class="note">Pour annuler une inscription ou pointer les présents, modifier la colonne « Statut » dans le Google Sheet (Confirmé / Présent / Annulé) : la place libérée réapparaît automatiquement sur la page de réservation.</p>
+  </div>
+</div>
+
+<script>
+  // ⬇︎ Même URL que dans index.html. Vide = lecture des inscriptions du mode démo (ce navigateur).
+  const API_URL = '';
+
+  const $ = id => document.getElementById(id);
+  let data = null;
+
+  function demoData() {
+    let rows = [];
+    try { rows = JSON.parse(localStorage.getItem('zellijist-demo') || '[]'); } catch {}
+    const labels = { 'mar-06-1200': 'Mardi 6 octobre · 12:00 · Flexform', 'mer-07-1500': 'Mercredi 7 octobre · 15:00 · Flexform' };
+    const sessions = {};
+    Object.keys(labels).forEach(id => {
+      const booked = rows.filter(r => r.session === id).reduce((a, r) => a + r.seats, 0);
+      sessions[id] = { label: labels[id], capacity: 10, booked, remaining: Math.max(0, 10 - booked) };
+    });
+    return { ok: true, sessions, rows: rows.map(r => ({ ...r, sessionId: r.session, session: labels[r.session], status: 'Confirmé' })) };
+  }
+
+  async function load() {
+    $('msg').textContent = 'Chargement…';
+    try {
+      if (!API_URL) data = demoData();
+      else {
+        const r = await fetch(`${API_URL}?action=list&key=${encodeURIComponent($('key').value)}`, { cache: 'no-store' });
+        data = await r.json();
+      }
+      if (!data.ok) { $('msg').textContent = 'Clé incorrecte.'; return; }
+      try { sessionStorage.setItem('zk', $('key').value); } catch {}
+      $('msg').textContent = API_URL ? '' : 'Mode démo : inscriptions de ce navigateur uniquement.';
+      $('login').hidden = true; $('refresh').hidden = false; $('out').hidden = false;
+      draw();
+    } catch { $('msg').textContent = 'Impossible de charger les données.'; }
+  }
+
+  function draw() {
+    const stats = $('stats'); stats.innerHTML = '';
+    const filter = $('filter');
+    const cur = filter.value;
+    filter.length = 1;
+    let totB = 0, totC = 0;
+    Object.entries(data.sessions).forEach(([id, s]) => {
+      totB += s.booked; totC += s.capacity;
+      const el = document.createElement('div'); el.className = 'stat';
+      el.innerHTML = `<div class="k"></div><div class="v">${s.booked}<small> / ${s.capacity} · ${s.remaining} restante(s)</small></div>`;
+      el.querySelector('.k').textContent = s.label;
+      stats.append(el);
+      filter.add(new Option(s.label, id));
+    });
+    const t = document.createElement('div'); t.className = 'stat';
+    t.innerHTML = `<div class="k">Total</div><div class="v">${totB}<small> / ${totC} places</small></div>`;
+    stats.append(t);
+    filter.value = cur;
+
+    const tb = $('rows'); tb.innerHTML = '';
+    rowsFiltered().forEach((r, i) => {
+      const tr = document.createElement('tr');
+      if (r.status === 'Annulé') tr.className = 'cancel';
+      [i + 1, r.session, r.firstName, r.lastName, r.email, r.phone, r.seats, r.company || '', r.status, fmt(r.date)]
+        .forEach(v => { const td = document.createElement('td'); td.textContent = v; tr.append(td); });
+      tb.append(tr);
+    });
+    if (!tb.children.length) tb.innerHTML = '<tr><td colspan="10" style="opacity:.7">Aucune inscription pour le moment.</td></tr>';
+  }
+
+  const rowsFiltered = () => data.rows.filter(r => !$('filter').value || r.sessionId === $('filter').value);
+  const fmt = d => { const x = new Date(d); return isNaN(x) ? d : x.toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' }); };
+
+  $('csv').addEventListener('click', () => {
+    const head = ['Session', 'Prénom', 'Nom', 'Email', 'Téléphone', 'Places', 'Société', 'Statut', 'Inscrit le'];
+    const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+    const lines = [head.map(esc).join(';')].concat(rowsFiltered().map(r =>
+      [r.session, r.firstName, r.lastName, r.email, r.phone, r.seats, r.company, r.status, fmt(r.date)].map(esc).join(';')));
+    const blob = new Blob(['﻿' + lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'inscrits-atelier-zellige.csv'; a.click();
+  });
+  $('filter').addEventListener('change', draw);
+  $('refresh').addEventListener('click', load);
+  $('login').addEventListener('submit', e => { e.preventDefault(); load(); });
+  try { const k = sessionStorage.getItem('zk'); if (k) { $('key').value = k; load(); } } catch {}
+  if (!API_URL) load();
+</script>
+</body>
+</html>

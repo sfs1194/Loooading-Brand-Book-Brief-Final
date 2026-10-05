@@ -1,0 +1,52 @@
+/* Morocco Design 2026 — DA reprise pour l'atelier The Zellijist
+   Vert / or / blanc, grotesque étendue en capitales. */
+/* Polices auto-hébergées (Google Fonts, licence OFL) */
+@font-face { font-family: 'Archivo'; font-style: normal; font-weight: 400 900; font-stretch: 62% 125%; font-display: swap;
+  src: url(fonts/archivo-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Archivo'; font-style: normal; font-weight: 400 900; font-stretch: 62% 125%; font-display: swap;
+  src: url(fonts/archivo-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20C0, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Amiri'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url(fonts/amiri-arabic.woff2) format('woff2'); unicode-range: U+0600-06FF, U+0750-077F, U+FB50-FDFF, U+FE70-FEFC; }
+
+:root {
+  --md-green: #2D5E37;
+  --md-green-deep: #244D2D;
+  --md-green-line: #4C7A55;
+  --md-gold: #D6B53F;
+  --md-gold-soft: #E4CB6E;
+  --md-white: #FFFFFF;
+  --md-ink: #10261A;
+  --font-wide: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --font-ar: 'Amiri', 'Noto Naskh Arabic', serif;
+}
+
+.wide { font-family: var(--font-wide); font-stretch: 125%; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; }
+.caps { font-family: var(--font-wide); font-stretch: 100%; font-weight: 600; text-transform: uppercase; }
+
+/* ---------- Logos ----------
+   Wordmarks typographiques en attendant les fichiers officiels.
+   Pour utiliser les vrais logos : déposer les SVG/PNG dans atelier/assets/logos/
+   et remplacer le contenu de chaque .logo par <img src="assets/logos/xxx.svg" alt="...">. */
+.logo { display: inline-flex; align-items: center; color: currentColor; line-height: 1; white-space: nowrap; }
+
+.logo-md { gap: .12em; color: var(--md-gold); }
+
+.logo-md .lat { text-transform: uppercase; font-family: var(--font-wide); font-stretch: 112%; font-weight: 800; font-size: 1em; line-height: .86; letter-spacing: -0.02em; display: flex; flex-direction: column; }
+.logo-md .ar { font-family: var(--font-ar); font-weight: 700; font-size: 1.95em; line-height: 1; transform: translateY(-.08em); }
+
+.logo-zellijist { font-family: var(--font-wide); font-stretch: 125%; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; gap: .5em; }
+.logo-zellijist .star { width: 1.15em; height: 1.15em; flex: none; }
+.logo-zellijist b { font-weight: 800; }
+
+.logo-sfs { font-family: var(--font-wide); font-stretch: 100%; font-weight: 400; letter-spacing: .18em; text-transform: uppercase; flex-direction: column; align-items: flex-start; gap: .25em; }
+.logo-sfs b { font-weight: 800; letter-spacing: .1em; font-size: 1.15em; }
+.logo-sfs span { font-size: .62em; letter-spacing: .5em; }
+
+.logo-flexform { font-family: var(--font-wide); font-stretch: 100%; font-weight: 700; letter-spacing: -0.03em; text-transform: lowercase; font-size: 1.35em; }
+
+.partners { display: flex; align-items: center; flex-wrap: wrap; }
+.partners .x { font-family: var(--font-wide); font-weight: 400; opacity: .6; }
+
+[hidden] { display: none !important; }
